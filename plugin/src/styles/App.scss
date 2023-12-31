@@ -23,7 +23,7 @@ body {
     background-color: #fff;
     cursor: pointer;
   }
-  i {
+  .text-gradient {
     background: -webkit-linear-gradient(25deg, $mainClr, $secClr);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -38,6 +38,23 @@ body {
   font-weight: 400;
   box-sizing: border-box;
   font-family: "Cairo", Arial, Helvetica, sans-serif;
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #bbb;
+    border-radius: 30px;
+  }
+}
+input {
+  border-radius: 30px;
+  outline: none;
+  border: 1px solid #ccc;
+  padding: 5px 15px;
+  width: 100%;
 }
 
 .plugin {
@@ -48,31 +65,7 @@ body {
   height: 600px;
   padding: 10px 20px;
   background-color: #fff;
-  .plugin-top {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    button,
-    a {
-      border: none;
-      font-size: 30px;
-      transition: 0.2s;
-      &:hover {
-        filter: brightness(1.2);
-      }
-    }
-    .plugin-title {
-      display: flex;
-      align-items: center;
-      font-size: 30px;
-      gap: 10px;
-      .isharat-logo {
-        width: 25px;
-        margin-top: -5px;
-      }
-    }
-  }
+
   .hr {
     width: 100%;
     height: 1px;
@@ -83,6 +76,12 @@ body {
       width: 90%;
     }
   }
+  .section-hr {
+    border: none;
+    height: 1px;
+    margin: 15px 0;
+    background-color: #aaa;
+  }
   .container {
     border: 1px solid #ccc;
     border-radius: 10px;
@@ -90,81 +89,12 @@ body {
     width: 100%;
     margin: 5px 0;
     flex-grow: 1;
-    .tabs-btns {
-      display: flex;
-      justify-content: center;
-      padding-top: 0;
-      .tab-btn {
-        padding: 8px 5px;
-        flex-grow: 1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 12px;
-        white-space: nowrap;
-        border: none;
-        background-color: #eeeeeece;
-        border-bottom: 1px solid #ccc;
-        border-right: 1px solid #ccc;
-        cursor: pointer;
-        display: flex;
-        gap: 5px;
-        transition: 0.2s;
-        i {
-          font-size: 20px;
-        }
-        &.active {
-          background-color: #fff;
-          border-bottom-color: #fff;
-          border-right: #fff;
-        }
-        &.prev {
-          border-bottom-left-radius: 10px;
-        }
-        &.next {
-          border-bottom-right-radius: 10px;
-        }
-        &:not(.active):hover {
-          background-color: #ddd;
-        }
-        &:last-child {
-          border-right: none;
-        }
-      }
-    }
 
-    .tab-box {
-      padding: 20px;
+    .tab {
+      padding: 15px;
       min-width: 200px;
-    }
-  }
-  .more-info,
-  .copyright {
-    font-size: 10px;
-    padding: 8px 0;
-    font-weight: 600;
-  }
-  .copyright {
-    display: flex;
-    align-items: center;
-    gap: 2px;
-    .logo {
-      width: 50px;
-      height: 17px;
-      img {
-        width: 100%;
-      }
-    }
-  }
-}
-
-#arabic {
-  .plugin-top {
-    direction: ltr;
-  }
-  .container {
-    .tabs-btns {
-      direction: ltr;
+      overflow-y: auto;
+      height: 378px;
     }
   }
 }

@@ -1,0 +1,31 @@
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  button,
+  a {
+    border: none;
+    font-size: 30px;
+    transition: 0.2s;
+    &:hover {
+      filter: brightness(1.2);
+    }
+  }
+  .plugin-title {
+    display: flex;
+    align-items: center;
+    font-size: 30px;
+    gap: 10px;
+    .isharat-logo {
+      width: 25px;
+      margin-top: -5px;
+    }
+  }
+}
+
+#arabic {
+  .header {
+    direction: ltr;
+  }
+}

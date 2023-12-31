@@ -1,0 +1,72 @@
+@import "../../styles/variables.scss";
+
+.switch {
+  display: inline-block;
+  position: relative;
+  width: 45px;
+  height: 25px;
+  background-color: rgba(192, 191, 191, 0.521);
+  border-radius: 30px;
+  cursor: pointer;
+  transition: 0.2s;
+  overflow: hidden;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.39) inset;
+  padding-left: 25px;
+  font-size: 10px;
+  padding-top: 4px;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+  &:hover {
+    filter: brightness(1.1);
+  }
+  &::before {
+    content: "On";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding-left: 7px;
+    padding-top: 1px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.39) inset;
+    background-color: rgba(192, 191, 191, 0.521);
+    top: 0%;
+    left: -140%;
+    color: #ffffff98;
+    transition: 0.2s;
+    border-radius: 30px;
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    transition: 0.2s;
+    width: 21px;
+    height: 21px;
+    top: 2px;
+    left: 2px;
+    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.24) inset;
+    background-color: #fff;
+    border-radius: 50%;
+  }
+
+  input.form-control:focus {
+    box-shadow: none;
+  }
+
+  &.active {
+    &::after {
+      translate: -100%;
+      left: calc(100% - 2px);
+    }
+    &::before {
+      background-color: rgb(1, 196, 98);
+      left: 0%;
+    }
+  }
+}
+#arabic {
+  .switch {
+    direction: ltr;
+  }
+}

@@ -1,0 +1,27 @@
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .more-info,
+  .copyright {
+    font-size: 10px;
+    padding: 3px 0;
+    font-weight: 600;
+  }
+  .more-info {
+    font-size: 12px;
+  }
+  .copyright {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    text-align: center;
+    .logo {
+      width: 50px;
+      height: 17px;
+      img {
+        width: 100%;
+      }
+    }
+  }
+}

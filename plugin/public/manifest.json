@@ -3,13 +3,12 @@
   "name": "اشارات",
   "version": "1.0",
   "description": "وصف اشارات وصف اشارات وصف اشارات وصف اشارات",
-  "permissions": [
-    "activeTab",
-    "storage",
-    "notifications",
-    "contextMenus",
-    "tabs"
-  ],
+  "permissions": ["activeTab", "contextMenus", "windows", "storage"],
+
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js"
+  },
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
