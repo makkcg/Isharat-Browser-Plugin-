@@ -34,4 +34,9 @@ npm run build
 ### ♦ Plugin
 
 - Production version path: plugin/dist
+
+- React.js Production version will run only when added in browser extensions or using server and cannot run normally (will not run if you open index.html)
+
 - Available and tested in Chrome, Firefox, Edge
+
+- for testing on Firefox browser you need to replace ("service_worker": "background.js") to ("scripts": ["background.js"]) in manifest.json file
