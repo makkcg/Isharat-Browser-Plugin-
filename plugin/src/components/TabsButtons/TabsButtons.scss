@@ -1,3 +1,5 @@
+@import "../../styles/variables.scss";
+
 .tabs-btns {
   display: flex;
   justify-content: center;
@@ -20,6 +22,7 @@
     transition: 0.2s;
     i {
       font-size: 20px;
+      color: $mainClr;
     }
     &.active {
       background-color: #eee;

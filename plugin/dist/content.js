@@ -24,8 +24,16 @@ let currentBrowser = getBrowserType();
 // check if element has text
 const elementHasText = element => element.textContent.trim().length > 0;
 
+const getClasses = classes =>
+  classes
+    .split(" ")
+    .map(item => `body:not(.plugin-body) ${item}`)
+    .join(", ");
+
 // function to get list of elements
-const getElements = () => document.querySelectorAll("p, pre, span, h1, h2, h3, h4, h5, h6, th, td, code, a, input, textarea, button");
+const getElements = () => document.querySelectorAll(getClasses("p pre span h1 h2 h3 h4 h5 h6 th td code a i input textarea button time cite"));
+const getElementsForLineHeight = () => document.querySelectorAll(getClasses("p span li em a"));
+const getTextElements = () => document.querySelectorAll(getClasses("p h1 h2 h3 h4 h5 h6 pre"));
 
 // function to get element style value
 const getElementStyle = (element, style) => window.getComputedStyle(element)[style];
@@ -34,12 +42,32 @@ const getElementStyle = (element, style) => window.getComputedStyle(element)[sty
 function handleLargeFont(payload) {
   if (payload.active || !payload.firstLoad) {
     getElements().forEach(element => {
-      if (!element.getAttribute("data-font-size")) {
+      if (!element.getAttribute("data-isharat-font-size")) {
         const fontSize = getElementStyle(element, "fontSize");
-        element.setAttribute("data-font-size", fontSize);
+        element.setAttribute("data-isharat-font-size", fontSize);
       }
-      let oldValue = element.getAttribute("data-font-size").split("px").join("");
+      let oldValue = element.getAttribute("data-isharat-font-size").split("px").join("");
       if (elementHasText(element)) element.style.fontSize = `${oldValue * payload.currentValue}px`;
+    });
+  }
+}
+
+// Font Weight
+function handleFontWeight(payload) {
+  if (payload.active || !payload.firstLoad) {
+    let weight = 100;
+    if (payload.currentValue === 1) weight = 600;
+    else if (payload.currentValue === 2) weight = 700;
+    else if (payload.currentValue === 3) weight = 900;
+    else weight = 100;
+    getElements().forEach(element => {
+      if (!element.getAttribute("data-isharat-font-weight")) {
+        const fontWeight = getElementStyle(element, "fontWeight");
+        element.setAttribute("data-isharat-font-weight", fontWeight);
+      }
+      let oldValue = element.getAttribute("data-isharat-font-weight");
+
+      if (elementHasText(element)) element.style.fontWeight = payload.active ? `${weight}` : oldValue;
     });
   }
 }
@@ -47,12 +75,12 @@ function handleLargeFont(payload) {
 // Letter Spacing
 function handleLetterSpacing(payload) {
   getElements().forEach(element => {
-    if (!element.getAttribute("data-letter-spacing")) {
+    if (!element.getAttribute("data-isharat-letter-spacing")) {
       const letterSpacing = getElementStyle(element, "letterSpacing");
-      element.setAttribute("data-letter-spacing", letterSpacing);
+      element.setAttribute("data-isharat-letter-spacing", letterSpacing);
     }
     if (elementHasText(element)) {
-      let oldValue = element.getAttribute("data-letter-spacing").split("px").join("");
+      let oldValue = element.getAttribute("data-isharat-letter-spacing").split("px").join("");
       let lastValue = "";
       if (oldValue === "normal" && payload.currentValue !== 0) lastValue = `${payload.currentValue}px`;
       else lastValue = oldValue;
@@ -64,12 +92,12 @@ function handleLetterSpacing(payload) {
 // Line Height
 function handleLineHeight(payload) {
   if (payload.active || !payload.firstLoad) {
-    document.querySelectorAll("p, span, li, em, a").forEach(element => {
-      if (!element.getAttribute("data-line-height")) {
+    getElementsForLineHeight().forEach(element => {
+      if (!element.getAttribute("data-isharat-line-height")) {
         const lineHeight = getElementStyle(element, "lineHeight");
-        element.setAttribute("data-line-height", lineHeight);
+        element.setAttribute("data-isharat-line-height", lineHeight);
       }
-      let oldValue = element.getAttribute("data-line-height").split("px").join("");
+      let oldValue = element.getAttribute("data-isharat-line-height").split("px").join("");
       element.style.lineHeight = `${oldValue * payload.currentValue}px`;
     });
   }
@@ -79,7 +107,7 @@ function handleLineHeight(payload) {
 function handleHighlightLinks(payload) {
   let active = payload.active;
   if (active || !payload.firstLoad) {
-    document.querySelectorAll("a").forEach(element => {
+    document.querySelectorAll(getClasses("a")).forEach(element => {
       element.style.fontWeight = active ? `700` : "300";
       element.style.textDecoration = active ? `underline` : "none";
     });
@@ -89,51 +117,152 @@ function handleHighlightLinks(payload) {
 // Text Align
 function handleTextAlign(payload) {
   let elements = getElements();
-  elements = [...elements, ...document.querySelectorAll("div")];
+  elements = [...elements, ...document.querySelectorAll(getClasses("div"))];
   elements.forEach(element => {
-    if (!element.getAttribute("data-text-align")) {
+    if (!element.getAttribute("data-isharat-text-align")) {
       const textAlign = getElementStyle(element, "textAlign");
-      element.setAttribute("data-text-align", textAlign);
+      element.setAttribute("data-isharat-text-align", textAlign);
     }
-
+    if (!element.getAttribute("data-isharat-justify-content")) {
+      const justifyContent = getElementStyle(element, "justifyContent");
+      element.setAttribute("data-isharat-justify-content", justifyContent);
+    }
+    let flexDirection = getElementStyle(element, "flexDirection");
     if (elementHasText(element)) {
-      let oldValue = element.getAttribute("data-text-align").split("px").join("");
+      let oldTextAlign = element.getAttribute("data-isharat-text-align");
+      let oldJustifyContent = element.getAttribute("data-isharat-justify-content");
       element.style.textAlign = payload.currentValue;
-      if (payload.currentValue === "default") element.style.textAlign = oldValue;
+      if (flexDirection !== "column") element.style.justifyContent = payload.currentValue;
+      if (payload.currentValue === "default") {
+        element.style.textAlign = oldTextAlign;
+        if (flexDirection !== "column") element.style.justifyContent = oldJustifyContent;
+      }
     }
   });
 }
 
 // Hide Images
 function handleHideImages(payload) {
-  document.querySelectorAll("img, svg").forEach(element => (element.style.display = payload.active ? "none" : "unset"));
-  let elements = getElements();
-  elements = [...elements, ...document.querySelectorAll("div")];
-  elements.forEach(element => (element.style.backgroundSize = payload.active ? "0" : "unset"));
+  let active = payload.active;
+  if (active || !payload.firstLoad) {
+    document.querySelectorAll(getClasses("img:not(.isharat-translate-img) svg")).forEach(element => {
+      if (!element.getAttribute("data-isharat-display")) {
+        const display = getElementStyle(element, "display");
+        element.setAttribute("data-isharat-display", display);
+      }
+      let oldValue = element.getAttribute("data-isharat-display");
+      element.style.display = payload.active ? "none" : oldValue;
+    });
+    let elements = getElements();
+    elements = [...elements, ...document.querySelectorAll(getClasses("div"))];
+
+    elements.forEach(element => {
+      if (!element.getAttribute("data-isharat-background-size")) {
+        const backgroundSize = getElementStyle(element, "backgroundSize");
+        element.setAttribute("data-isharat-background-size", backgroundSize);
+      }
+      let oldValue = element.getAttribute("data-isharat-background-size");
+      element.style.backgroundSize = payload.active ? "0" : oldValue;
+    });
+  }
 }
 
 // Saturation & Contrast
-let saturate = 1;
-let contrast = 100;
 
 // Saturation
 function handleSaturation(payload) {
-  document.body.style.filter = `saturate(${payload.currentValue}) contrast(${contrast}%)`;
-  saturate = payload.currentValue;
+  if (payload.active || !payload.firstLoad) {
+    [...getElements(), ...document.querySelectorAll(getClasses("img i svg"))].forEach(element => {
+      element.style.filter = `saturate(${payload.currentValue})`;
+    });
+    document.querySelectorAll("div").forEach(element => {
+      const backgroundImage = getElementStyle(element, "backgroundImage");
+      if (backgroundImage.includes("url")) element.style.filter = `saturate(${payload.currentValue})`;
+    });
+  }
 }
 
 // Contrast
 function handleContrast(payload) {
-  document.body.style.filter = `contrast(${payload.currentValue}%) saturate(${saturate})`;
-  contrast = payload.currentValue;
+  let active = payload.active;
+  if (active || !payload.firstLoad) {
+    [...getElements(), ...document.querySelectorAll(getClasses("div section header footer aside nav"))].forEach(element => {
+      if (!element.getAttribute("data-isharat-background-color")) {
+        const backgroundColor = getElementStyle(element, "backgroundColor");
+        element.setAttribute("data-isharat-background-color", backgroundColor);
+      }
+      if (!element.getAttribute("data-isharat-color")) {
+        const color = getElementStyle(element, "color");
+        element.setAttribute("data-isharat-color", color);
+      }
+      if (!element.getAttribute("data-isharat-opacity")) {
+        const opacity = getElementStyle(element, "opacity");
+        element.setAttribute("data-isharat-opacity", opacity);
+      }
+      let oldBg = element.getAttribute("data-isharat-background-color");
+      let oldColor = element.getAttribute("data-isharat-color");
+      let oldOpacity = element.getAttribute("data-isharat-opacity");
+
+      if (oldBg !== "rgba(0, 0, 0, 0)") element.style.backgroundColor = active ? "#fff" : oldBg;
+      element.style.color = active ? "#000" : oldColor;
+      element.style.opacity = active ? 1 : oldOpacity;
+    });
+  }
 }
 
+// listen to message from popup
 function onMessage(request, action, callback) {
-  if (request.action === action) callback(request.payload);
+  if (request.action === action) {
+    callback(request.payload);
+
+    // Chrome & Edge
+    if (currentBrowser === "Chrome" || currentBrowser === "Edge") {
+      chrome.storage.local.set({ [request.action]: request.payload });
+    }
+
+    // Firefox
+    if (currentBrowser === "Firefox") {
+      browser.storage.local.set({ [request.action]: request.payload });
+    }
+
+    // Safari
+    if (currentBrowser === "Safari") {
+      safari.extension.settings.setItem(request.action, JSON.stringify(request.payload));
+    }
+  }
+}
+
+// get data from local storage & Apply on content
+function getFromStorageAndEnable(key, callback) {
+  // Chrome & Edge
+  if ((currentBrowser === "Chrome" || currentBrowser === "Edge") && chrome.storage) {
+    chrome.storage.local.get([key]).then(result => {
+      callback(result[key]);
+    });
+  }
+  // Firefox
+  if (currentBrowser === "Firefox" && browser.storage) {
+    browser.storage.local.get([key]).then(result => {
+      callback(result[key]);
+    });
+  }
+  // Safari
+  if (currentBrowser === "Safari") {
+    var storedDataString = safari.extension.settings.getItem(key);
+    if (storedDataString) callback(JSON.parse(storedDataString)[key]);
+  }
+}
+
+function enableTranslationIcon(payload) {
+  let active = payload.active;
+  document.querySelectorAll(".isharat-translate-btn").forEach(button => {
+    button.style.display = active ? "inline" : "none";
+  });
 }
 
 function listenToContentControlMsgs(request) {
   onMessage(request, "large_font", handleLargeFont);
+  onMessage(request, "font_weight", handleFontWeight);
   onMessage(request, "text_spacing", handleLetterSpacing);
   onMessage(request, "line_height", handleLineHeight);
   onMessage(request, "highlight_links", handleHighlightLinks);
@@ -141,9 +270,25 @@ function listenToContentControlMsgs(request) {
   onMessage(request, "saturation", handleSaturation);
   onMessage(request, "contrast", handleContrast);
   onMessage(request, "hide_images", handleHideImages);
+
+  onMessage(request, "enable_translate_icon", enableTranslationIcon);
 }
 
-// Chrome
+setTimeout(() => {
+  getFromStorageAndEnable("large_font", payload => handleLargeFont({ ...payload, firstLoad: true }));
+  getFromStorageAndEnable("font_weight", payload => handleFontWeight({ ...payload, firstLoad: true }));
+  getFromStorageAndEnable("text_spacing", payload => handleLetterSpacing({ ...payload, firstLoad: true }));
+  getFromStorageAndEnable("line_height", payload => handleLineHeight({ ...payload, firstLoad: true }));
+  getFromStorageAndEnable("highlight_links", payload => handleHighlightLinks({ ...payload, firstLoad: true }));
+  getFromStorageAndEnable("text_align", payload => handleTextAlign({ ...payload, firstLoad: true }));
+  getFromStorageAndEnable("saturation", payload => handleSaturation({ ...payload, firstLoad: true }));
+  getFromStorageAndEnable("contrast", payload => handleContrast({ ...payload, firstLoad: true }));
+  getFromStorageAndEnable("hide_images", payload => handleHideImages({ ...payload, firstLoad: true }));
+
+  getFromStorageAndEnable("enable_translate_icon", payload => enableTranslationIcon({ ...payload, firstLoad: true }));
+}, 500);
+
+// Chrome & Edge
 if (currentBrowser === "Chrome" || currentBrowser === "Edge") {
   if (chrome.runtime) {
     chrome.runtime.onMessage.addListener(function (request) {
@@ -160,3 +305,54 @@ if (currentBrowser === "Firefox") {
     });
   }
 }
+
+// Safari
+if (currentBrowser === "Safari") {
+  // Receiving a message in a content script
+  safari.self.addEventListener("message", function (event) {
+    listenToContentControlMsgs({ ...event, action: event.name });
+  });
+}
+
+getTextElements().forEach(element => {
+  if (element.innerText && element.innerText.length > 20) {
+    let button = document.createElement("button");
+    button.title = element.innerText;
+    button.classList.add("isharat-translate-btn");
+    button.onclick = () => {
+      window.open("https://google.com");
+    };
+    let img = document.createElement("img");
+    img.classList.add("isharat-translate-img");
+    img.src = "https://static.vecteezy.com/system/resources/previews/021/996/818/original/hand-cursor-icon-clip-art-free-png.png";
+    button.appendChild(img);
+    element.appendChild(button);
+  }
+});
+
+document.querySelectorAll(".isharat-translate-btn").forEach(button => {
+  button.style.cssText = `
+    position: relative;
+    border-radius: 30px;
+    width: 25px;
+    height: 25px;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    margin: 0 10px;
+    background-color: transparent;
+    display:none;
+  `;
+});
+document.querySelectorAll(".isharat-translate-btn img").forEach(img => {
+  img.style.cssText = `
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    margin: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  `;
+});

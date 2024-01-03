@@ -1,6 +1,7 @@
 export default [
   {
     id: 1,
+    key: "enable_translate_letters",
     nameAr: "تفعيل الهجاء الاصبعى",
     nameEn: "Activate finger aerosol",
     descriptionAr: "عند عدم وجود اشارة للكلمة قم بترجمة حروف الكلمة بلغة الاشارة",
@@ -9,6 +10,7 @@ export default [
   },
   {
     id: 2,
+    key: "enable_grammer",
     nameAr: "تفعيل اشارات قواعد اللغة العربية",
     nameEn: "Activating Arabic grammar signals",
     descriptionAr: "اضافة اشارات زمن الفعل والمثني والمذكر والمؤنث وخلافه من قواعد اللغة",
@@ -17,6 +19,7 @@ export default [
   },
   {
     id: 3,
+    key: "enable_translate_icon",
     nameAr: "اضافة أيقونة ترجمة لغة الاشارة الي الموقع",
     nameEn: "Add a sign language translation icon to the site",
     descriptionAr: "عند التفعيل يتم اضافة ايقونة ترجمة لغة الاشارة بنهاية كل نص في الموقع عند الضغط عليها يتم ترجمة النص الي لغة الاشارة",
@@ -26,6 +29,7 @@ export default [
   },
   {
     id: 4,
+    key: "enable_formation",
     nameAr: "تفعيل اختيار التشكيل للكلمات العربية وتصحيح النص العربي",
     nameEn: "Activate diacritic selection for Arabic words and correct Arabic text",
     descriptionAr: "عند التفعيل يتم تحليل النص العربي الذي تم اختياره واظهار اختيارات التشكيل للكلمات حتيى يختار المستخدم التشكيل الصحيح ومن ثم بدء الترجمة بلغة الاشارة",
@@ -35,6 +39,7 @@ export default [
   },
   {
     id: 5,
+    key: "enable_current_word_coloring",
     nameAr: "تفعيل تلوين الكلمة التي يتم ترجمتها",
     nameEn: "Activate coloring of the word being translated",
     descriptionAr: "عند التفعيل واثناء ترجمة كلمات النص يقوم بتلوين الكلمة الحالة التي تظهر اشارتها في الفيديو اثناء عرض الترجمة",
@@ -43,6 +48,7 @@ export default [
   },
   {
     id: 6,
+    key: "enable_smart_number_reader",
     nameAr: "تفعيل قارئ الأرقام الذكي",
     nameEn: "Activate the smart number reader",
     descriptionAr: "عند التفعيل يقوم بمعرفة نوع الرقم اذا كان تاريخ او رقم موبايل او غيره ويقوم بقراءته بطريقة صحيحة بمخاكاة الواقع",
@@ -51,6 +57,7 @@ export default [
   },
   {
     id: 7,
+    key: "enable_dialect",
     nameAr: "تفعيل ترجمة الكلمات العامية",
     nameEn: "Activate the translation of colloquial words",
     descriptionAr: "عند التفعيل وبعد اختيار اللهجة العامية يمكن ترجمة الكلمات العامية حسب الدولة المختارة واللهجة",

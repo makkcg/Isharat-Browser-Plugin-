@@ -1,140 +1,146 @@
 import { useContext, useEffect, useState } from "react";
 import "./Settings.scss";
 import { AppContext } from "../../../contexts/AppContext";
-import { PluginContext } from "../../../contexts/PluginContext";
 import SelectBox from "../../SelectBox/SelectBox";
-import contentControlsList from "../../../data/contentControls";
+
 import translationControlsList from "../../../data/translationControls";
 
-import translatorImg1 from "../../../images/translators/1.jpg";
-import translatorImg2 from "../../../images/translators/2.jpg";
-import translatorImg3 from "../../../images/translators/3.jpg";
-import Switch from "../../Switch/Switch";
+import translatorImg from "../../../images/translators/1.jpg";
 
-const translators = [
-  {
-    id: 1,
-    country: "Egypt",
-    img: translatorImg1,
-    nameEn: "Ahmed",
-    nameAr: "احمد"
-  },
-  {
-    id: 2,
-    country: "Egypt",
-    img: translatorImg2,
-    nameEn: "Yasser",
-    nameAr: "ياسر"
-  },
-  {
-    id: 3,
-    country: "Egypt",
-    img: translatorImg3,
-    nameEn: "Adel",
-    nameAr: "عادل"
-  },
-  {
-    id: 4,
-    country: "United States",
-    img: translatorImg1,
-    nameEn: "John",
-    nameAr: "جون"
-  },
-  {
-    id: 5,
-    country: "United States",
-    img: translatorImg3,
-    nameEn: "Martin",
-    nameAr: "مارتن"
-  }
-];
-const dialects = [
-  {
-    id: 1,
-    nameAr: "اللغة العربية",
-    nameEn: "Standard Arabic"
-  },
-  {
-    id: 2,
-    nameAr: "المصرية",
-    nameEn: "Egyptian"
-  }
-];
-const countries = [
-  {
-    id: 1,
-    nameEn: "Egypt",
-    nameAr: "مصر"
-  },
-  {
-    id: 2,
-    nameEn: "United States",
-    nameAr: "الولايات المتحدة"
-  }
-];
+import Switch from "../../Switch/Switch";
+import ContentControlsSection from "./contentControlsSection/ContentControlsSection.jsx";
+import { QueryContext } from "../../../contexts/QueryContext.jsx";
+import { PluginContext } from "../../../contexts/PluginContext.jsx";
 
 const Settings = () => {
-  const { getText, languages } = useContext(AppContext);
+  const { getText } = useContext(AppContext);
   const { sendMessage } = useContext(PluginContext);
+  const { GetAllQuery } = useContext(QueryContext);
+  const [selectedData, setSelectedData] = useState({ translationSettings: {} });
+  const lsSettingsName = "settings";
 
-  const [selectedLanguage, setSelectedLanguage] = useState(languages[0]);
+  // Languages
+  const languages = GetAllQuery("Languages");
+  const [selectedLanguage, setSelectedLanguage] = useState({});
+
+  // countries
+  const countries = GetAllQuery("Countries");
+  const [selectedCountry, setSelectedCountry] = useState({});
+
+  // translators
+  const translators = GetAllQuery("Translators");
   const [selectedTranslator, setSelectedTranslator] = useState({});
-  const [selectedCountry, setSelectedCountry] = useState(countries[0]);
-  const [selectedDialect, setSelectedDialect] = useState(dialects[0]);
+  const [filteredTranslators, setFilteredTranslators] = useState([]);
 
-  const [contentControls, setContentControls] = useState(contentControlsList);
+  // Dialects
+  const dialects = GetAllQuery("Slangs");
+  const [dialectsList, setDialectsList] = useState([]);
+  const [selectedDialect, setSelectedDialect] = useState({});
+
   const [translationControls, setTranslationControls] = useState(translationControlsList);
 
-  function handleContentControl(key) {
-    const newControls = [...contentControls];
-    let newCurrentValue;
-    newControls.forEach(item => {
-      if (item.key === key) {
-        if (item.values) {
-          let changed = false;
-          item.values.forEach((value, index) => {
-            if (changed) return;
-            if (index === item.values.length - 1) {
-              item.currentValue = item.values[0];
-              return;
-            }
-            if (value === item.currentValue) {
-              item.currentValue = item.values[index + 1];
-              changed = true;
-            }
-          });
-          item.active = item.currentValue !== item.values[0];
-        }
-        if (!item.values) item.active = !item.active;
-        newCurrentValue = item.currentValue;
-      }
-    });
-    let listForLocalStorage = [];
-    newControls.forEach(control => {
-      listForLocalStorage.push({
-        id: control.id,
-        active: control.active,
-        currentValue: control.currentValue
-      });
-    });
-    localStorage.setItem("contentControls", JSON.stringify(listForLocalStorage));
-    setContentControls(newControls);
-    return newCurrentValue;
-  }
+  // Default Language (العربية)
   useEffect(() => {
-    if (localStorage.getItem("contentControls") !== null) {
-      let listFromLocalStorage = JSON.parse(localStorage.getItem("contentControls"));
-      let newControls = [...contentControls];
-      newControls.forEach(control => {
-        let foundItem = listFromLocalStorage.find(item => item.id === control.id);
-        if (foundItem) {
-          control.currentValue = foundItem.currentValue;
-          control.active = foundItem.active;
-        }
-      });
-      setContentControls(newControls);
+    if (languages.data && !selectedLanguage.id) {
+      let arabicLanguage = languages.data.data.find(language => language.LanguageName === "العربية");
+      if (arabicLanguage) setSelectedLanguage(arabicLanguage);
+    }
+  }, [languages.data, selectedLanguage.id]);
+
+  // Default Country (Egypt)
+  useEffect(() => {
+    if (countries.data && !selectedCountry.id) {
+      let egyptCountry = countries.data.data.find(country => country.Alpha3 === "EGY");
+      if (egyptCountry) setSelectedCountry(egyptCountry);
+    }
+  }, [countries.data, selectedCountry.id]);
+
+  // Default Country (Egypt)
+  useEffect(() => {
+    if (countries.data && !selectedCountry.id) {
+      let egyptCountry = countries.data.data.find(country => country.Alpha3 === "EGY");
+      if (egyptCountry) setSelectedCountry(egyptCountry);
+    }
+  }, [countries.data, dialects.data, selectedCountry.id]);
+
+  // filter dialects when selected language change
+  useEffect(() => {
+    // new dialects
+    let newDialecs = [...dialects.list];
+    // filter dialects by current selected language
+    newDialecs = newDialecs.filter(dialect => dialect.LanguageID.id === selectedLanguage.id);
+    setDialectsList(newDialecs);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedLanguage, dialects.data]);
+
+  // get translators by country
+  useEffect(() => {
+    setFilteredTranslators(
+      translators.list.filter(translator => {
+        if (translator.CountryID.id === selectedCountry.id) return true;
+        // get egypt country
+        let egyptCountry = countries.list.find(country => country.Alpha3 === "EGY");
+        // always show translators from egypt
+        if (egyptCountry && translator.CountryID.id === egyptCountry.id) return true;
+        return false;
+      })
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [translators.data, selectedCountry]);
+
+  useEffect(() => {
+    // add settings in local storage once if not found
+    if (localStorage.getItem(lsSettingsName) === null) localStorage.setItem(lsSettingsName, JSON.stringify({ translationSettings: {} }));
+    if (localStorage.getItem(lsSettingsName) !== null) {
+      // get data from local storage
+      let newSelectedData = JSON.parse(localStorage.getItem(lsSettingsName));
+      if (newSelectedData) setSelectedData(newSelectedData);
     }
   }, []);
+
+  // when any selected item change store it in local storage
+  useEffect(() => {
+    if (localStorage.getItem(lsSettingsName) !== null) {
+      // get old data
+      let newSelectedData = JSON.parse(localStorage.getItem(lsSettingsName));
+      // update data
+      if (selectedCountry.id) newSelectedData.selectedCountryId = selectedCountry.id;
+      if (selectedLanguage.id) newSelectedData.selectedLanguageId = selectedLanguage.id;
+      if (selectedTranslator.id) newSelectedData.selectedTranslatorId = selectedTranslator.id;
+      if (selectedDialect.id) newSelectedData.selectedDialectId = selectedDialect.id;
+      // store data in local storage
+      localStorage.setItem(lsSettingsName, JSON.stringify(newSelectedData));
+    }
+  }, [selectedCountry, selectedTranslator, selectedDialect, selectedLanguage]);
+
+  // Translation Controls switchs
+  useEffect(() => {
+    if (selectedData.translationSettings) {
+      let newTranslationControlsList = [...translationControls];
+      // update each control switch based on settings data stored in local storage
+      newTranslationControlsList.forEach(control => {
+        if (selectedData.translationSettings[control.key]) control.active = selectedData.translationSettings[control.key];
+      });
+    }
+  }, [selectedData, translationControls]);
+
+  // get selected item object
+  function getSelectedItem(id, query, setSelectedItem) {
+    if (!id) return;
+    let newSelectedItem = query.list.find(item => item.id === id);
+    if (newSelectedItem) setSelectedItem(newSelectedItem);
+  }
+
+  useEffect(() => {
+    // get selected items object
+    getSelectedItem(selectedData.selectedCountryId, countries, setSelectedCountry);
+    getSelectedItem(selectedData.selectedLanguageId, languages, setSelectedLanguage);
+    getSelectedItem(selectedData.selectedDialectId, dialects, setSelectedDialect);
+    getSelectedItem(selectedData.selectedTranslatorId, translators, setSelectedTranslator);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [countries.data, languages.data, dialects.data, translators.data, selectedData]);
+
+  useEffect(() => {}, []);
 
   return (
     <div className="tab settings">
@@ -143,56 +149,17 @@ const Settings = () => {
           {/* language select */}
           <SelectBox
             text={getText("اللغة", "Language")}
-            nameField={getText("arabic", "english")}
-            secNameField={getText("english", "arabic")}
-            list={languages}
+            nameField={getText("LanguageName", "LanguageName")}
+            list={languages.list}
+            isLoading={languages.isLoading}
+            isError={languages.isError}
+            refetch={languages.refetch}
             selectedItem={selectedLanguage}
             setSelectedItem={setSelectedLanguage}
           />
         </section>
         <hr className="section-hr" />
-        <section className="section content-control-section">
-          <h2 className="section-title">{getText("إعدادات تعديلات المحتوى", "Content Style Settings")}</h2>
-          <div className="content-control-cards">
-            {contentControls.map((card, index) => {
-              let active = card.active ? "active" : "";
-              let currentValueView = card.currentValue;
-              if (card.currentValue || card.currentValue === 0) {
-                if (card.key === "large_font") currentValueView = `X${card.currentValue}`;
-                if (card.key === "line_height") currentValueView = `X${card.currentValue}`;
-                if (card.key === "text_spacing") currentValueView = `${card.currentValue}px`;
-                if (card.key === "text_align") currentValueView = "";
-                if (card.key === "contrast") currentValueView = `${card.currentValue}%`;
-                if (card.key === "saturation") currentValueView = `X${card.currentValue}`;
-              }
-              return (
-                <div
-                  onClick={() => {
-                    let newCurrentValue = handleContentControl(card.key);
-
-                    sendMessage(card.key, { active: card.active, currentValue: newCurrentValue });
-                  }}
-                  key={index}
-                  className={`content-control-card ${active}`}
-                >
-                  <i className={`icon text-gradient ${card.icon}`}></i>
-                  <p className="text">
-                    {getText(card.name.arabic, card.name.english)} {(currentValueView || currentValueView === 0) && `(${currentValueView})`}{" "}
-                    {card.key === "text_align" && <i className={`fa-solid fa-align-${card.currentValue}`}></i>}
-                  </p>
-                  {card.values && (
-                    <div className="levels">
-                      {card.values.map((value, index) => {
-                        let active = value === card.currentValue ? "active" : "";
-                        return <span key={index} className={`level ${active}`}></span>;
-                      })}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </section>
+        <ContentControlsSection />
       </section>
       <section className="section sections-group translation-settings">
         <h2 className="section-title">{getText("إعدادات ترجمة لغة الإشارة", "Translation Settings")}</h2>
@@ -202,23 +169,40 @@ const Settings = () => {
           {/* country select */}
           <SelectBox
             text={getText("الدولة", "Country")}
-            nameField={getText("nameAr", "nameEn")}
-            list={countries}
+            nameField={getText("CountryName_en", "CountryName_en")}
+            list={countries.list}
+            isLoading={countries.isLoading}
+            isError={countries.isError}
+            refetch={countries.refetch}
             selectedItem={selectedCountry}
             setSelectedItem={setSelectedCountry}
           />
           {/* Translators list */}
+          {!translators.isLoading && !translators.isError && !countries.isLoading && !filteredTranslators.length && (
+            <div className="no-translators">{getText("لا يوجد مترجمين برجاء تغيير الدولة", "No translators, Please change Country")}</div>
+          )}
+          {translators.isError && (
+            <div className="error-box">
+              {getText("عذرا حدث خطأ!", "Sorry, Something went wrong!")}
+              {/* Retry button */}
+              <button className="main-btn" onClick={translators.refetch}>
+                {getText("إعادة المحاولة", "Retry")}
+              </button>
+            </div>
+          )}
           <div className="translators-list">
-            {translators.map((translator, index) => {
+            {/* show 3 empty cards when loading translators */}
+            {translators.isLoading && ["", "", ""].map((_t, i) => <div key={i} className={`loading`}></div>)}
+            {/* translators list */}
+            {filteredTranslators.map((translator, index) => {
               let active = selectedTranslator.id === translator.id ? "active" : "";
-              if (translator.country !== selectedCountry.nameEn) return;
               return (
                 <div key={index} onClick={() => setSelectedTranslator(translator)} className={`translator-card ${active}`}>
                   <div className="card-body">
                     <div className="image">
-                      <img src={translator.img} alt={translator.nameEn} />
+                      <img src={translatorImg} alt={translator.nameEn} />
                     </div>
-                    <div className="name">{getText(translator.nameAr, translator.nameEn)}</div>
+                    <div className="name">{getText(translator.NameAr, translator.NameEn)}</div>
                   </div>
                 </div>
               );
@@ -226,6 +210,7 @@ const Settings = () => {
           </div>
         </div>
         <div className="translation-controls-list">
+          {/* Translation Control Card */}
           {translationControls.map(control => {
             return (
               <div key={control.id} className="translation-control-card">
@@ -238,9 +223,15 @@ const Settings = () => {
                   active={control.active}
                   changeSwitch={() => {
                     let newList = [...translationControls];
+                    let newSelectedData = { ...selectedData };
                     newList.forEach(item => {
-                      if (item.id === control.id) item.active = !item.active;
+                      if (item.id === control.id) {
+                        item.active = !item.active;
+                      }
+                      newSelectedData.translationSettings[control.key] = control.active;
                     });
+                    sendMessage(control.key, { active: control.active });
+                    localStorage.setItem(lsSettingsName, JSON.stringify(newSelectedData));
                     setTranslationControls(newList);
                   }}
                 />
@@ -249,11 +240,15 @@ const Settings = () => {
           })}
         </div>
         {/* country select */}
-        {translationControls[6].active && (
+        {selectedData.translationSettings.enable_dialect && (
           <SelectBox
-            text={getText("اللهجة", "Dialect")}
-            nameField={getText("nameAr", "nameEn")}
-            list={dialects}
+            text={`${getText("اللهجة", "Dialect")}`}
+            nameField={getText("Slang", "Slang")}
+            list={dialectsList}
+            isLoading={dialects.isLoading}
+            noResultMsg={getText("لا يوجد نتائج برجاء تغيير اللغة", "No results, Please change language")}
+            isError={dialects.isError}
+            refetch={dialects.refetch}
             selectedItem={selectedDialect}
             setSelectedItem={setSelectedDialect}
           />

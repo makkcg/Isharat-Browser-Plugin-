@@ -1,0 +1,56 @@
+@import "../../../../styles/variables.scss";
+
+.content-control-section {
+  .content-control-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 15px;
+    flex-wrap: wrap;
+    .content-control-card {
+      background-color: #fff;
+      padding: 17px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      border-radius: 10px;
+      border: 2px solid #fff;
+      cursor: pointer;
+      transition: 0.2s;
+      &.active {
+        border-color: $mainClr;
+      }
+      &:hover {
+        box-shadow: 0 5px 10px #0000002a;
+      }
+      .text {
+        font-size: 11px;
+        font-weight: 700;
+        text-align: center;
+      }
+      .icon {
+        font-size: 25px;
+        color: $mainClr;
+      }
+      *::selection {
+        background-color: transparent;
+      }
+      .levels {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        .level {
+          display: flex;
+          width: 7px;
+          height: 7px;
+          border-radius: 50%;
+          background-color: #bbb;
+          transition: 0.2s;
+          &.active {
+            background-color: $mainClr;
+          }
+        }
+      }
+    }
+  }
+}

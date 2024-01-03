@@ -53,7 +53,7 @@ const TabsButtons = ({ tab, setTab }) => {
                 tabsButtons[index + 1] && tab === tabsButtons[index + 1].tab ? "next" : ""
               } ${tab === tabsButtons[index].tab ? "active" : ""}`}
             >
-              <i className={`text-gradient ${btn.icon}`}></i> {getText(btn.name.arabic, btn.name.english)}
+              <i className={`${btn.icon}`}></i> {getText(btn.name.arabic, btn.name.english)}
             </button>
           );
         })}

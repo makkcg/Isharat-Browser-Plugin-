@@ -22,7 +22,7 @@ function getBrowserType() {
 // current used browser
 let currentBrowser = getBrowserType();
 
-// Chrome
+// Chrome & Edge Context Menu
 if (currentBrowser === "Chrome" || currentBrowser === "Edge") {
   chrome.runtime.onInstalled.addListener(() => {
     // Create the context menu item
@@ -40,7 +40,7 @@ if (currentBrowser === "Chrome" || currentBrowser === "Edge") {
   });
 }
 
-// Firefox
+// Firefox Context Menu
 if (currentBrowser === "Firefox") {
   browser.runtime.onInstalled.addListener(() => {
     // Create the context menu item
@@ -56,4 +56,34 @@ if (currentBrowser === "Firefox") {
     console.log("Selected Text:", info.selectionText);
     browser.windows.create({ url: "https://www.google.com", type: "popup" });
   });
+}
+
+// Safari Context Menu
+if (currentBrowser === "Safari") {
+  // Register the context menu item when the global page loads
+  safari.application.addEventListener(
+    "command",
+    event => {
+      if (event.command === "translate") {
+        // Create the context menu item
+        var contextMenu = event.target.contextMenu;
+        contextMenu.appendContextMenuItem("translate", "ترجمة بلغة الاشارة", "selection");
+      }
+    },
+    false
+  );
+
+  // Handle context menu item click event
+  safari.application.addEventListener(
+    "validate",
+    event => {
+      if (event.command === "translate") {
+        // Handle the click event
+        console.log("Selected Text:", safari.application.activeBrowserWindow.activeTab.page.selection.toString());
+        // Open a new tab or window with the desired URL
+        safari.application.activeBrowserWindow.openTab("foreground").url = "https://www.google.com";
+      }
+    },
+    false
+  );
 }

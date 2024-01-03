@@ -43,18 +43,11 @@ export default function PluginContextProvider(props) {
         browser.tabs.sendMessage(tabs[0].id, { action, payload });
       });
     }
-  }
-
-  useEffect(() => {
-    if (localStorage.getItem("contentControls") !== null) {
-      let listFromLocalStorage = JSON.parse(localStorage.getItem("contentControls"));
-
-      listFromLocalStorage.forEach(control => {
-        let key = contentControls.find(item => item.id === control.id).key;
-        sendMessage(key, { firstLoad: true, active: control.active, currentValue: control.currentValue });
-      });
+    // Safari
+    if (currentBrowser === "Safari") {
+      safari.application.activeBrowserWindow.activeTab.page.dispatchMessage(action, {action, payload});
     }
-  }, []);
+  }
 
   const value = { sendMessage };
   return <PluginContext.Provider value={value}>{props.children}</PluginContext.Provider>;
