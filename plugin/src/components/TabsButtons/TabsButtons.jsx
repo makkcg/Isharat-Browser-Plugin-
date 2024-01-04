@@ -46,14 +46,8 @@ const TabsButtons = ({ tab, setTab }) => {
       <div className="tabs-btns">
         {tabsButtons.map((btn, index) => {
           return (
-            <button
-              key={index}
-              onClick={() => setTab(btn.tab)}
-              className={`tab-btn ${tabsButtons[index - 1] && tab === tabsButtons[index - 1].tab ? "prev" : ""} ${
-                tabsButtons[index + 1] && tab === tabsButtons[index + 1].tab ? "next" : ""
-              } ${tab === tabsButtons[index].tab ? "active" : ""}`}
-            >
-              <i className={`${btn.icon}`}></i> {getText(btn.name.arabic, btn.name.english)}
+            <button key={index} onClick={() => setTab(btn.tab)} className={`tab-btn ${tab === tabsButtons[index].tab ? "active" : ""}`}>
+              <i className={btn.icon}></i> {getText(btn.name.arabic, btn.name.english)}
             </button>
           );
         })}

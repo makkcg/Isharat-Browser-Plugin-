@@ -62,51 +62,48 @@ const ContentControlsSection = () => {
   }, []);
 
   return (
-    <div>
-      <section className="section content-control-section">
-        <h2 className="section-title">{getText("إعدادات تعديلات المحتوى", "Content Style Settings")}</h2>
-        <div className="content-control-cards">
-          {contentControls.map((card, index) => {
-            let active = card.active ? "active" : "";
-            let currentValueView = card.currentValue;
-            if (card.currentValue || card.currentValue === 0) {
-              if (card.key === "large_font") currentValueView = `X${card.currentValue}`;
-              if (card.key === "font_weight") currentValueView = card.currentValue === "default" ? "" : `${card.currentValue}`;
-              if (card.key === "line_height") currentValueView = `X${card.currentValue}`;
-              if (card.key === "text_spacing") currentValueView = `${card.currentValue}px`;
-              if (card.key === "text_align") currentValueView = "";
-              if (card.key === "contrast") currentValueView = ``;
-              if (card.key === "saturation") currentValueView = `X${card.currentValue}`;
-            }
-            return (
-              <div
-                onClick={() => {
-                  let newCurrentValue = handleContentControl(card.key);
-
-                  sendMessage(card.key, { active: card.active, currentValue: newCurrentValue });
-                }}
-                key={index}
-                className={`content-control-card ${active}`}
-              >
-                <i className={`icon ${card.icon}`}></i>
-                <p className="text">
-                  {getText(card.name.arabic, card.name.english)} {(currentValueView || currentValueView === 0) && `(${currentValueView})`}{" "}
-                  {card.key === "text_align" && <i className={`fa-solid fa-align-${card.currentValue}`}></i>}
-                </p>
-                {card.values && (
-                  <div className="levels">
-                    {card.values.map((value, index) => {
-                      let active = value === card.currentValue ? "active" : "";
-                      return <span key={index} className={`level ${active}`}></span>;
-                    })}
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      </section>
-    </div>
+    <section className="section content-control-section">
+      <h2 className="section-title">{getText("إعدادات تعديلات المحتوى", "Content Style Settings")}</h2>
+      <div className="content-control-cards">
+        {contentControls.map((card, index) => {
+          let active = card.active ? "active" : "";
+          let currentValueView = card.currentValue;
+          if (card.currentValue || card.currentValue === 0) {
+            if (card.key === "large_font") currentValueView = `X${card.currentValue}`;
+            if (card.key === "font_weight") currentValueView = card.currentValue === "default" ? "" : `${card.currentValue}`;
+            if (card.key === "line_height") currentValueView = `X${card.currentValue}`;
+            if (card.key === "text_spacing") currentValueView = `${card.currentValue}px`;
+            if (card.key === "text_align") currentValueView = "";
+            if (card.key === "contrast") currentValueView = ``;
+            if (card.key === "saturation") currentValueView = `X${card.currentValue}`;
+          }
+          return (
+            <div
+              onClick={() => {
+                let newCurrentValue = handleContentControl(card.key);
+                sendMessage(card.key, { active: card.active, currentValue: newCurrentValue });
+              }}
+              key={index}
+              className={`content-control-card ${active}`}
+            >
+              <i className={`icon ${card.icon}`}></i>
+              <p className="text">
+                {getText(card.name.arabic, card.name.english)} {(currentValueView || currentValueView === 0) && `(${currentValueView})`}{" "}
+                {card.key === "text_align" && <i className={`fa-solid fa-align-${card.currentValue}`}></i>}
+              </p>
+              {card.values && (
+                <div className="levels">
+                  {card.values.map((value, index) => {
+                    let active = value === card.currentValue ? "active" : "";
+                    return <span key={index} className={`level ${active}`}></span>;
+                  })}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </section>
   );
 };
 

@@ -5,8 +5,6 @@ import SelectBox from "../../SelectBox/SelectBox";
 
 import translationControlsList from "../../../data/translationControls";
 
-import translatorImg from "../../../images/translators/1.jpg";
-
 import Switch from "../../Switch/Switch";
 import ContentControlsSection from "./contentControlsSection/ContentControlsSection.jsx";
 import { QueryContext } from "../../../contexts/QueryContext.jsx";
@@ -42,7 +40,7 @@ const Settings = () => {
   // Default Language (العربية)
   useEffect(() => {
     if (languages.data && !selectedLanguage.id) {
-      let arabicLanguage = languages.data.data.find(language => language.LanguageName === "العربية");
+      let arabicLanguage = languages.data.data.find(language => language.LanguageName_ar === "العربية");
       if (arabicLanguage) setSelectedLanguage(arabicLanguage);
     }
   }, [languages.data, selectedLanguage.id]);
@@ -55,13 +53,13 @@ const Settings = () => {
     }
   }, [countries.data, selectedCountry.id]);
 
-  // Default Country (Egypt)
+  // Default dialect (Standard Arabic)
   useEffect(() => {
-    if (countries.data && !selectedCountry.id) {
-      let egyptCountry = countries.data.data.find(country => country.Alpha3 === "EGY");
-      if (egyptCountry) setSelectedCountry(egyptCountry);
+    if (dialects.data && !selectedDialect.id) {
+      let standardArabic = dialects.data.data.find(dialect => dialect.Slang_en === "Standard Arabic");
+      if (standardArabic) setSelectedDialect(standardArabic);
     }
-  }, [countries.data, dialects.data, selectedCountry.id]);
+  }, [dialects.data, selectedDialect.id]);
 
   // filter dialects when selected language change
   useEffect(() => {
@@ -149,7 +147,8 @@ const Settings = () => {
           {/* language select */}
           <SelectBox
             text={getText("اللغة", "Language")}
-            nameField={getText("LanguageName", "LanguageName")}
+            nameField={getText("LanguageName_ar", "LanguageName_en")}
+            secNameField={getText("LanguageName_en", "LanguageName_ar")}
             list={languages.list}
             isLoading={languages.isLoading}
             isError={languages.isError}
@@ -169,7 +168,7 @@ const Settings = () => {
           {/* country select */}
           <SelectBox
             text={getText("الدولة", "Country")}
-            nameField={getText("CountryName_en", "CountryName_en")}
+            nameField={getText("CountryName_ar", "CountryName_en")}
             list={countries.list}
             isLoading={countries.isLoading}
             isError={countries.isError}
@@ -200,7 +199,7 @@ const Settings = () => {
                 <div key={index} onClick={() => setSelectedTranslator(translator)} className={`translator-card ${active}`}>
                   <div className="card-body">
                     <div className="image">
-                      <img src={translatorImg} alt={translator.nameEn} />
+                      <img src={translator.Image} alt={translator.nameEn} />
                     </div>
                     <div className="name">{getText(translator.NameAr, translator.NameEn)}</div>
                   </div>
@@ -243,7 +242,7 @@ const Settings = () => {
         {selectedData.translationSettings.enable_dialect && (
           <SelectBox
             text={`${getText("اللهجة", "Dialect")}`}
-            nameField={getText("Slang", "Slang")}
+            nameField={getText("Slang", "Slang_en")}
             list={dialectsList}
             isLoading={dialects.isLoading}
             noResultMsg={getText("لا يوجد نتائج برجاء تغيير اللغة", "No results, Please change language")}

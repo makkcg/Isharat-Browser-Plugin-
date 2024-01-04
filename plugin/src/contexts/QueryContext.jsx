@@ -19,7 +19,7 @@ export default function QueryContextProvider(props) {
       refetchOnMount: false,
       refetchOnWindowFocus: false
     });
-    result.list = result.data ? result.data.data : [];
+    result.list = result.data && Array.isArray(result.data.data) ? result.data.data : [];
     return result;
   };
   const value = { GetAllQuery };

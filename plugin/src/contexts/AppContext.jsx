@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 export const AppContext = createContext();
 
@@ -20,7 +20,7 @@ export default function AppContextProvider(props) {
   ];
   const getLanguage = key => languages.find(la => la.key === key);
   // plugin current language (default is arabic)
-  const [language, setLanguage] = useState(getLanguage("arabic").key);
+  const [language, setLanguage] = useState();
 
   // append text based on current language
   const getText = (arabicText, englishText) => {
@@ -30,9 +30,24 @@ export default function AppContextProvider(props) {
   };
 
   const switchLang = () => {
-    if (language === getLanguage("english").key) setLanguage(getLanguage("arabic").key);
-    if (language === getLanguage("arabic").key) setLanguage(getLanguage("english").key);
+    if (language === getLanguage("english").key) {
+      setLanguage(getLanguage("arabic").key);
+      localStorage.setItem("language", JSON.stringify(getLanguage("arabic").key));
+    }
+    if (language === getLanguage("arabic").key) {
+      setLanguage(getLanguage("english").key);
+      localStorage.setItem("language", JSON.stringify(getLanguage("english").key));
+    }
   };
+
+  useEffect(() => {
+    if (localStorage.getItem("language") !== null) {
+      let languageFromLS = JSON.parse(localStorage.getItem("language"));
+      let foundLanguage = getLanguage(languageFromLS);
+      if (foundLanguage) setLanguage(foundLanguage.key);
+      else setLanguage(getLanguage("arabic").key);
+    } else setLanguage(getLanguage("arabic").key);
+  }, []);
 
   const value = { languages, language, getLanguage, setLanguage, getText, switchLang };
   return <AppContext.Provider value={value}>{props.children}</AppContext.Provider>;

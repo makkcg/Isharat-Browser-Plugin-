@@ -26,7 +26,7 @@ const SelectBox = ({ text, nameField, secNameField, list, isLoading, noResultMsg
       {/* Selected item button */}
       <button onClick={() => setDropdownActive(!dropdownActive)} className="selected-item">
         <div className="text">
-          {text}: {selectedItem[nameField]} {secNameField ? `(${selectedItem[secNameField]})` : ""}
+          {text}: {selectedItem[nameField]} {secNameField && selectedItem[secNameField] ? `(${selectedItem[secNameField]})` : ""}
         </div>{" "}
         <div className="icons">
           {isLoading && (
