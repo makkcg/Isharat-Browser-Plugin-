@@ -29,14 +29,14 @@ function App() {
         <div className="container">
           <TabsButtons tab={tab} setTab={setTab} />
           {/* tabs (only selected one will show up) */}
-          {tab === "about" && <About />}
+          {tab === "about" && <About setTab={setTab} />}
           {tab === "websites" && <Websites />}
           {tab === "settings" && <Settings />}
           {tab === "login" && <Login />}
         </div>
         <Footer />
       </div>
-      <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+      {/* <ReactQueryDevtools initialIsOpen={false} position="bottom-right" /> */}
     </QueryClientProvider>
   );
 }

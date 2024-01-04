@@ -66,14 +66,14 @@
     .dropdown-list {
       margin: 0;
       list-style: none;
-      max-height: 130px;
+      max-height: 230px;
       padding: 0;
       overflow-y: auto;
       .dropdown-item {
         cursor: pointer;
         border-top: 1px solid #ccc;
-        padding: 5px 15px;
-        font-size: 14px;
+        padding: 4px 15px;
+        font-size: 13px;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -102,7 +102,7 @@
     .select-dropdown {
       padding-top: 50px;
       top: 0;
-      max-height: 250px;
+      max-height: 350px;
     }
   }
 }

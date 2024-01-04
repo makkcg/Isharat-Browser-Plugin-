@@ -18,37 +18,40 @@ export default function AppContextProvider(props) {
       arabic: "الانجليزية"
     }
   ];
-  const getLanguage = key => languages.find(la => la.key === key);
   // plugin current language (default is arabic)
   const [language, setLanguage] = useState();
 
-  // append text based on current language
+  const getLanguage = key => languages.find(la => la.key === key);
+  const defaultLanguage = getLanguage("arabic").key;
+
+  // show text based on current language
   const getText = (arabicText, englishText) => {
     if (language === getLanguage("arabic").key) return arabicText;
     if (language === getLanguage("english").key) return englishText;
     return "";
   };
 
-  const switchLang = () => {
-    if (language === getLanguage("english").key) {
-      setLanguage(getLanguage("arabic").key);
-      localStorage.setItem("language", JSON.stringify(getLanguage("arabic").key));
-    }
-    if (language === getLanguage("arabic").key) {
-      setLanguage(getLanguage("english").key);
-      localStorage.setItem("language", JSON.stringify(getLanguage("english").key));
-    }
+  const changeLanguage = lang => {
+    setLanguage(getLanguage(lang).key);
+    localStorage.setItem("language", JSON.stringify(getLanguage(lang).key));
   };
 
+  // get saved language from local storage
   useEffect(() => {
     if (localStorage.getItem("language") !== null) {
+      // get language from local storage
       let languageFromLS = JSON.parse(localStorage.getItem("language"));
+      // if language exist change current language to it
       let foundLanguage = getLanguage(languageFromLS);
       if (foundLanguage) setLanguage(foundLanguage.key);
-      else setLanguage(getLanguage("arabic").key);
-    } else setLanguage(getLanguage("arabic").key);
+      // if language doesn't exist or not saved in local storage make default language arabic
+      else {
+        setLanguage(defaultLanguage);
+        localStorage.setItem("language", JSON.stringify(defaultLanguage));
+      }
+    } else setLanguage(defaultLanguage);
   }, []);
 
-  const value = { languages, language, getLanguage, setLanguage, getText, switchLang };
+  const value = { languages, language, getLanguage, setLanguage, getText, changeLanguage };
   return <AppContext.Provider value={value}>{props.children}</AppContext.Provider>;
 }

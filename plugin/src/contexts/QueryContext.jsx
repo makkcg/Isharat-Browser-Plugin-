@@ -5,11 +5,17 @@ import axios from "axios";
 export const QueryContext = createContext();
 
 export default function QueryContextProvider(props) {
+  const securityKey = "kcg-isharat-123456-kcg-isharat";
   const mainApiUrl = "https://kcgwebservices.net/sign_translator_v4.1/public/api/";
 
   function apiGet({ queryKey }) {
     const key = queryKey[0];
-    return axios.get(`${mainApiUrl}${key}`);
+    return axios.get(`${mainApiUrl}${key}`, {
+      headers: {
+        "X-Security-Key": securityKey,
+        "Content-Type": "application/json"
+      }
+    });
   }
 
   const GetAllQuery = key => {
