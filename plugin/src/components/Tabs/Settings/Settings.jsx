@@ -1,11 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import "./Settings.scss";
 import { AppContext } from "../../../contexts/AppContext";
-import SelectBox from "../../SelectBox/SelectBox";
+import SelectBox from "../../Form/SelectBox/SelectBox.jsx";
 
 import translationControlsList from "../../../data/translationControls";
 
-import Switch from "../../Switch/Switch";
+import Switch from "../../Form/Switch/Switch.jsx";
 import ContentControlsSection from "./contentControlsSection/ContentControlsSection.jsx";
 import { QueryContext } from "../../../contexts/QueryContext.jsx";
 import { PluginContext } from "../../../contexts/PluginContext.jsx";

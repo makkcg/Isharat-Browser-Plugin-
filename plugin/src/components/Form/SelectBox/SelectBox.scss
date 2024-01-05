@@ -1,10 +1,15 @@
-@import "../../styles/variables.scss";
+@import "../../../styles/variables.scss";
 
 .select-box {
   width: 100%;
   position: relative;
   height: 50px;
   z-index: 2;
+  &.for-form {
+    .selected-item {
+      // border: none;
+    }
+  }
   .selected-item {
     position: absolute;
     z-index: 2;

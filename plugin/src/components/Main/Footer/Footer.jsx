@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import { AppContext } from "../../contexts/AppContext";
-import DiginoviaLogo from "../../images/diginovia-logo.jpeg";
+import { AppContext } from "../../../contexts/AppContext";
+import DiginoviaLogo from "../../../images/diginovia-logo.jpeg";
 import "./Footer.scss"
 
 const Footer = () => {

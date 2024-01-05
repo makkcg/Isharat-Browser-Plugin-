@@ -1,7 +1,7 @@
 // Images
 import { useContext, useState } from "react";
-import IsharatLogo from "../../images/isharat-logo.jpg";
-import { AppContext } from "../../contexts/AppContext";
+import IsharatLogo from "../../../images/isharat-logo.jpg";
+import { AppContext } from "../../../contexts/AppContext";
 import "./Header.scss";
 
 const Header = () => {

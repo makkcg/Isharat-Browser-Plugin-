@@ -1,17 +1,25 @@
-import { useContext, useState } from "react";
-import { AppContext } from "../../../contexts/AppContext";
+import { useContext, useEffect, useState } from "react";
+import { AppContext } from "../../../../contexts/AppContext";
 import "./Register.scss";
-import { emailValid, isMobilePhoneNumber, haveSpecialChar, nameIsValid, nameLengthOk } from "../../../utils/validations";
-import Input from "../../Input";
-import { FormContext } from "../../../contexts/FormContext";
-import Switch from "../../Switch/Switch";
+import { emailValid, isMobilePhoneNumber, haveSpecialChar, nameIsValid, nameLengthOk } from "../../../../utils/validations";
+import Input from "../../../Form/Input";
+import { FormContext } from "../../../../contexts/FormContext";
+import Switch from "../../../Form/Switch/Switch";
+import SelectBox from "../../../Form/SelectBox/SelectBox";
+import { QueryContext } from "../../../../contexts/QueryContext";
+import FormText from "../../../Form/FormText";
 
 const Register = () => {
   const { getText, setNestedProfileTab } = useContext(AppContext);
   const { setHint, updateFormData } = useContext(FormContext);
+  const { GetAllQuery } = useContext(QueryContext);
   const [userData, setUserData] = useState({});
   const [confirmTerms, setConfirmTerms] = useState(false);
   const updateData = e => updateFormData(e, userData, setUserData, validate);
+  const [selectedCountry, setSelectedCountry] = useState({});
+
+  // countries
+  const countries = GetAllQuery("Countries");
 
   function validate() {
     // Validate First Name
@@ -66,6 +74,14 @@ const Register = () => {
     setNestedProfileTab("login");
   }
 
+  // Default Country (Egypt)
+  useEffect(() => {
+    if (countries.data && !selectedCountry.id) {
+      let egyptCountry = countries.data.data.find(country => country.Alpha3 === "EGY");
+      if (egyptCountry) setSelectedCountry(egyptCountry);
+    }
+  }, [countries.data, selectedCountry.id]);
+
   console.log(userData);
   return (
     <div className="tab register">
@@ -73,17 +89,60 @@ const Register = () => {
         <h1 className="tab-title">{getText("إنشاء حساب جديد", "Register")}</h1>
         <hr className="hr" />
         {/* First Name */}
-        <Input title={getText("الاسم الاول", "First Name")} type="text" name="firstName" icon="fa-solid fa-user-circle" value={userData.firstName} action={updateData} />
+        <Input
+          title={getText("الاسم الاول", "First Name")}
+          required={true}
+          type="text"
+          name="firstName"
+          icon="fa-solid fa-user-circle"
+          value={userData.firstName}
+          action={updateData}
+        />
         {/* Last Name */}
-        <Input title={getText("اسم العائلة", "Last Name")} type="text" name="lastName" icon="fa-solid fa-user-circle" value={userData.lastName} action={updateData} />
-        {/* Mobile */}
-        <Input title={getText("الموبايل", "Mobile")} type="number" name="mobile" icon="fa-solid fa-phone" value={userData.mobile} action={updateData} />
+        <Input
+          title={getText("اسم العائلة", "Last Name")}
+          required={true}
+          type="text"
+          name="lastName"
+          icon="fa-solid fa-user-circle"
+          value={userData.lastName}
+          action={updateData}
+        />
+        {/* country select */}
+        <Input
+          title={getText("الدولة", "Country")}
+          type="select"
+          name="country"
+          value={userData.mobile}
+          action={updateData}
+          required={true}
+          element={
+            <SelectBox
+              forForm={true}
+              icon="fa-solid fa-earth-americas"
+              text={getText("الدولة", "Country")}
+              nameField={getText("CountryName_ar", "CountryName_en")}
+              list={countries.list}
+              isLoading={countries.isLoading}
+              isError={countries.isError}
+              refetch={countries.refetch}
+              selectedItem={selectedCountry}
+              setSelectedItem={setSelectedCountry}
+            />
+          }
+        />
+        <div className="two-inputs">
+          {/* Mobile */}
+          <FormText icon="fa-solid fa-phone-volume" title={getText("الكود", "Code")} value={selectedCountry.PhoneCode} classes="small" />
+          <Input required={true} title={getText("الموبايل", "Mobile")} type="number" name="mobile" icon="fa-solid fa-phone" value={userData.mobile} action={updateData} />
+        </div>
         {/* Email */}
-        <Input title={getText("الايميل", "Email")} type="email" name="email" icon="fa-solid fa-envelope" value={userData.email} action={updateData} />
+        <Input required={true} title={getText("الايميل", "Email")} type="email" name="email" icon="fa-solid fa-envelope" value={userData.email} action={updateData} />
         {/* Password */}
-        <Input title={getText("كلمة المرور", "Password")} type="password" name="password" icon="fa-solid fa-key" value={userData.password} action={updateData} />
+        <Input required={true} title={getText("كلمة المرور", "Password")} type="password" name="password" icon="fa-solid fa-key" value={userData.password} action={updateData} />
         {/* Confirm Password */}
         <Input
+          required={true}
           title={getText("تاكيد كلمة المرور", "Confirm Password")}
           type="password"
           name="confirmPassword"

@@ -1,9 +1,9 @@
 import { useContext, useState } from "react";
-import { AppContext } from "../../../contexts/AppContext";
+import { AppContext } from "../../../../contexts/AppContext";
 import "./ForgotPassword.scss";
-import { emailValid } from "../../../utils/validations";
-import Input from "../../Input";
-import { FormContext } from "../../../contexts/FormContext";
+import { emailValid } from "../../../../utils/validations";
+import Input from "../../../Form/Input";
+import { FormContext } from "../../../../contexts/FormContext";
 
 const ForgotPassword = () => {
   const { getText, setNestedProfileTab } = useContext(AppContext);
@@ -38,7 +38,7 @@ const ForgotPassword = () => {
           <p className="description">{getText("سيتم ارسال رسالة تحقق الى صندوق البريد الخاص بك", "A verification email will be sent to your mail inbox")}</p>
         </div>
         {/* Email */}
-        <Input title={getText("الايميل", "Email")} type="email" name="email" icon="fa-solid fa-envelope" value={userData.email} action={updateData} />
+        <Input required={true} title={getText("الايميل", "Email")} type="email" name="email" icon="fa-solid fa-envelope" value={userData.email} action={updateData} />
 
         {/* Submit */}
         <button onClick={submit} type="submit" className="submit main-btn">

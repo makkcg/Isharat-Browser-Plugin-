@@ -1,13 +1,13 @@
 import { useContext, useState } from "react";
-import { AppContext } from "../../../contexts/AppContext";
+import { AppContext } from "../../../../contexts/AppContext";
 import "./Login.scss";
-import { emailValid, haveSpecialChar } from "../../../utils/validations";
-import Input from "../../Input";
-import { FormContext } from "../../../contexts/FormContext";
-import Switch from "../../Switch/Switch";
+import { emailValid, haveSpecialChar } from "../../../../utils/validations";
+import Input from "../../../Form/Input";
+import { FormContext } from "../../../../contexts/FormContext";
+import Switch from "../../../Form/Switch/Switch";
 
 const Login = () => {
-  const { getText, setNestedProfileTab } = useContext(AppContext);
+  const { getText, login, setNestedProfileTab } = useContext(AppContext);
   const { setHint, updateFormData } = useContext(FormContext);
   const [rememberMe, setRememberMe] = useState(false);
   const [userData, setUserData] = useState({});
@@ -34,7 +34,7 @@ const Login = () => {
   function submit(e) {
     e.preventDefault();
     if (!validate(e)) return;
-    setNestedProfileTab("profile");
+    login();
   }
 
   return (
@@ -43,10 +43,10 @@ const Login = () => {
         <h1 className="tab-title">{getText("تسجيل الدخول", "Login")}</h1>
         <hr className="hr" />
         {/* Email */}
-        <Input title={getText("الايميل", "Email")} type="email" name="email" icon="fa-solid fa-envelope" value={userData.email} action={updateData} />
+        <Input required={true} title={getText("الايميل", "Email")} type="email" name="email" icon="fa-solid fa-envelope" value={userData.email} action={updateData} />
 
         {/* Password */}
-        <Input title={getText("كلمة المرور", "Password")} type="password" name="password" icon="fa-solid fa-key" value={userData.password} action={updateData} />
+        <Input required={true} title={getText("كلمة المرور", "Password")} type="password" name="password" icon="fa-solid fa-key" value={userData.password} action={updateData} />
 
         {/* Remember me */}
         <div className="input-group align">

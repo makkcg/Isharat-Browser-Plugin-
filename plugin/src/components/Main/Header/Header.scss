@@ -1,4 +1,4 @@
-@import "../../styles/variables.scss";
+@import "../../../styles/variables.scss";
 
 .lang-bg {
   position: absolute;
@@ -6,7 +6,7 @@
   left: 0;
   width: 100%;
   height: 100vh;
-  z-index: 3;
+  z-index: 4;
 }
 
 .header {
@@ -29,7 +29,7 @@
       padding: 15px;
       min-width: 250px;
       border: 1px solid #ccc;
-      z-index: 3;
+      z-index: 4;
       .close-dropdown-btn {
         position: absolute;
         top: 10px;

@@ -4,8 +4,19 @@ export const AppContext = createContext();
 
 export default function AppContextProvider(props) {
   // current selected tab
-  const [tab, setTab] = useState("about");
-  const [nestedProfileTab, setNestedProfileTab] = useState("login");
+  const [tab, setTab] = useState("profile");
+  const [nestedProfileTab, setNestedProfileTab] = useState("profile");
+  const [userLoggedIn, setUserLoggedIn] = useState(true);
+
+  const logout = () => {
+    setUserLoggedIn(false);
+    setNestedProfileTab("login");
+  };
+
+  const login = () => {
+    setUserLoggedIn(true);
+    setNestedProfileTab("profile");
+  };
 
   // all languages
   const languages = [
@@ -56,6 +67,23 @@ export default function AppContextProvider(props) {
     } else setLanguage(defaultLanguage);
   }, []);
 
-  const value = { languages, language, getLanguage, setLanguage, getText, changeLanguage, tab, setTab, nestedProfileTab, setNestedProfileTab };
+  const value = {
+    languages,
+    language,
+    getLanguage,
+    setLanguage,
+    getText,
+    changeLanguage,
+    // Tab
+    tab,
+    setTab,
+    // nested profile tab
+    nestedProfileTab,
+    setNestedProfileTab,
+    // login & logout
+    userLoggedIn,
+    login,
+    logout
+  };
   return <AppContext.Provider value={value}>{props.children}</AppContext.Provider>;
 }

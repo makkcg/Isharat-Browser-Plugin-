@@ -64,6 +64,16 @@ body {
   left: unset;
   right: 0;
 }
+[data-title-top]:after {
+  top: -28px;
+  bottom: unset;
+}
+[data-title-center]:after {
+  top: 20%;
+  transform: translate(0, -50%);
+  left: 15px;
+  bottom: unset;
+}
 
 [data-title] {
   position: relative;
@@ -109,6 +119,7 @@ body {
   justify-content: center;
   align-items: center;
   gap: 5px;
+  width: 100%;
   i {
     font-size: 17px;
   }
@@ -117,7 +128,8 @@ body {
   }
 }
 
-input:not([type="checkbox"]) {
+input:not([type="checkbox"]),
+.form-input-text {
   border-radius: 30px;
   outline: none;
   border: 1px solid #ccc;
@@ -226,7 +238,27 @@ input[type="number"]::-webkit-inner-spin-button {
     margin-bottom: 10px;
     position: relative;
     flex-basis: 1px;
-    flex-grow: 1;
+    flex-grow: 4;
+    .required {
+      color: red;
+      padding: 0 3px;
+      scale: 1.2;
+    }
+    &.small {
+      flex-grow: 2;
+    }
+    &.small2 {
+      flex-grow: 1;
+    }
+    &:not(.form-input-text-group) {
+      .input,
+      .selected-item {
+        &:hover {
+          box-shadow: 0 5px 10px #0000003d;
+          background-color: #fff;
+        }
+      }
+    }
     .show-password-btn {
       position: absolute;
       top: 20px;
@@ -241,40 +273,67 @@ input[type="number"]::-webkit-inner-spin-button {
       cursor: pointer;
       opacity: 0.8;
       transition: 0.2s;
-      &:hover {
-        box-shadow: 0 0 15px #00000081;
-      }
+
       i {
         font-size: 16px;
         color: $mainDClr;
       }
     }
-    .input {
+    .input,
+    .selected-item {
       display: flex;
       position: relative;
       border-radius: 30px;
       border: 1px solid #ccc;
-      overflow: hidden;
       box-shadow: 0 5px 10px #0000001a;
       transition: 0.2s;
-      &:hover {
-        box-shadow: 0 5px 10px #00000038;
+      &:focus-within {
+        border-color: $mainClr;
       }
       .icon {
-        width: 60px;
+        width: 45px;
         display: flex;
         align-items: center;
         justify-content: center;
+        flex-shrink: 0;
         i {
           color: $mainClr;
           font-size: 22px;
         }
       }
-      input {
+      input,
+      .form-input-text {
         border: none;
         border-radius: 0;
         padding-right: 0;
         padding-left: 0;
+        height: 38px;
+        width: calc(100% - 60px);
+      }
+      .form-input-text {
+        margin: 0;
+        font-size: 13px;
+      }
+    }
+    .select-box {
+      height: 45px;
+      z-index: 3;
+      .search-input {
+        height: 40px;
+        margin-top: 10px;
+      }
+      &.active {
+        .selected-item {
+          box-shadow: unset;
+        }
+      }
+      .selected-item {
+        .text {
+          gap: 15px;
+        }
+        .icon {
+          width: 15px;
+        }
       }
     }
     &.align {
@@ -290,9 +349,16 @@ input[type="number"]::-webkit-inner-spin-button {
       }
     }
     label {
+      cursor: pointer;
+    }
+    label,
+    .input-group-label {
+      position: relative;
+      z-index: 2;
+      display: flex;
       padding: 0 10px;
       font-size: 14px;
-      cursor: pointer;
+      width: fit-content;
     }
   }
 }

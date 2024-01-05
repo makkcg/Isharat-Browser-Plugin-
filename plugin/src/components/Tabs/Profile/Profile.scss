@@ -1,0 +1,187 @@
+@import "../../../styles/variables.scss";
+.profile {
+  padding: 0 !important;
+  .cover {
+    width: 100%;
+    aspect-ratio: 3/1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+  .profile-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px;
+    background-color: #eee;
+    .profile-card {
+      padding: 15px;
+      background-color: #fff;
+      border-radius: 15px;
+      box-shadow: 0 5px 7px #0000001c;
+      border: 1px solid $mainLClr;
+      &.top-card {
+        position: relative;
+        padding-top: 70px;
+        .buttons {
+          display: flex;
+          align-items: center;
+          gap: 15px;
+          margin-top: 15px;
+          .main-btn {
+            font-size: 14px;
+            padding: 5px 0;
+          }
+          .dashboard-btn {
+            background-color: rgb(0, 189, 57);
+          }
+        }
+        .profile-picture {
+          position: absolute;
+          border-radius: 50%;
+          overflow: hidden;
+          width: 130px;
+          border: 5px solid #fff;
+          box-shadow: 0 5px 10px #00000033;
+          aspect-ratio: 1/1;
+          top: -7px;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+        }
+        .welcome {
+          display: flex;
+          justify-content: center;
+          gap: 10px;
+          align-items: center;
+          .user-name {
+            font-size: 16px;
+          }
+        }
+      }
+      &.subscription-expire-card {
+        $warning: rgb(236, 176, 11);
+        border-color: $warning;
+        .user-info-item {
+          .icon {
+            background-color: $warning;
+            i {
+              font-size: 22px;
+            }
+          }
+          .text {
+            .value {
+              font-size: 12px;
+            }
+          }
+          span {
+            font-weight: 800;
+          }
+          a {
+            color: $mainDClr;
+            font-weight: 700;
+          }
+        }
+      }
+      .manage-account-btn {
+        margin-top: 15px;
+        margin-bottom: 15px;
+      }
+      .rate-btn {
+        width: 100%;
+        text-align: center;
+      }
+      .card-title {
+        position: relative;
+        font-size: 24px;
+        margin-bottom: 20px;
+        &::before {
+          position: absolute;
+          bottom: 0;
+          content: "";
+          display: flex;
+          width: 50px;
+          height: 3px;
+          background-color: $mainClr;
+        }
+        &::after {
+          position: absolute;
+          bottom: 0;
+          left: 55px;
+          content: "";
+          display: flex;
+          width: 5px;
+          height: 3px;
+          background-color: $mainClr;
+        }
+      }
+      .user-info-item {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        &:not(:last-child) {
+          border-bottom: 1px solid #ddd;
+          margin-bottom: 8px;
+          padding-bottom: 8px;
+        }
+        .icon {
+          width: 40px;
+          aspect-ratio: 1/1;
+          flex-shrink: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background-color: $mainClr;
+          border-radius: 50%;
+          i {
+            color: #fff;
+            font-size: 20px;
+          }
+        }
+        .text {
+          .title {
+            font-size: 17px;
+            font-weight: 600;
+          }
+          .value {
+            font-size: 13px;
+          }
+        }
+      }
+    }
+  }
+}
+#arabic {
+  .profile {
+    .profile-cards {
+      .profile-card {
+        .card-title {
+          &::after {
+            left: unset;
+            right: 55px;
+          }
+        }
+        &:not(.subscription-expire-card) {
+          .user-info-item {
+            .text {
+              .value {
+                width: fit-content;
+                direction: ltr;
+                text-align: end;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

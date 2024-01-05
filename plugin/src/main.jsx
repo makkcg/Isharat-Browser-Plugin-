@@ -13,7 +13,7 @@ import QueryContextProvider from "./contexts/QueryContext.jsx";
 import FormContextProvider from "./contexts/FormContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <AppContextProvider>
       <FormContextProvider>
         <QueryContextProvider>
@@ -23,5 +23,5 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         </QueryContextProvider>
       </FormContextProvider>
     </AppContextProvider>
-  </React.StrictMode>
+  // </React.StrictMode>
 );

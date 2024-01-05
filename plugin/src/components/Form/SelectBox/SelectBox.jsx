@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react";
-import { have } from "../../utils/search";
-import { AppContext } from "../../contexts/AppContext";
+import { have } from "../../../utils/search";
+import { AppContext } from "../../../contexts/AppContext";
 import "./SelectBox.scss";
-import loadingGIF from "../../images/loading.gif";
+import loadingGIF from "../../../images/loading.gif";
 
-const SelectBox = ({ text, nameField, secNameField, list, isLoading, noResultMsg, isError, refetch, selectedItem, setSelectedItem }) => {
+const SelectBox = ({ text, nameField, secNameField, list, isLoading, noResultMsg, isError, refetch, selectedItem, setSelectedItem, forForm, icon }) => {
   const { getText } = useContext(AppContext);
   // show & hide dropdown state
   const [dropdownActive, setDropdownActive] = useState(false);
@@ -22,11 +22,22 @@ const SelectBox = ({ text, nameField, secNameField, list, isLoading, noResultMsg
 
   if (!selectedItem) selectedItem = {};
   return (
-    <div onMouseLeave={() => setDropdownActive(false)} className={`select-box ${dropdownActive ? "active" : ""}`}>
+    <div onMouseLeave={() => setDropdownActive(false)} className={`select-box ${dropdownActive ? "active" : ""} ${forForm ? "for-form" : ""}`}>
       {/* Selected item button */}
-      <button onClick={() => setDropdownActive(!dropdownActive)} className="selected-item">
+      <button
+        onClick={e => {
+          e.preventDefault();
+          setDropdownActive(!dropdownActive);
+        }}
+        className="selected-item"
+      >
         <div className="text">
-          {text}: {selectedItem[nameField]} {secNameField && selectedItem[secNameField] ? `(${selectedItem[secNameField]})` : ""}
+          {forForm && icon && (
+            <span className="icon">
+              <i className={icon}></i>
+            </span>
+          )}
+          {!forForm && `${text}:`} {selectedItem[nameField]} {secNameField && selectedItem[secNameField] ? `(${selectedItem[secNameField]})` : ""}
         </div>{" "}
         <div className="icons">
           {isLoading && (
