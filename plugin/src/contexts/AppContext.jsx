@@ -3,6 +3,10 @@ import { createContext, useEffect, useState } from "react";
 export const AppContext = createContext();
 
 export default function AppContextProvider(props) {
+  // current selected tab
+  const [tab, setTab] = useState("about");
+  const [nestedProfileTab, setNestedProfileTab] = useState("login");
+
   // all languages
   const languages = [
     {
@@ -52,6 +56,6 @@ export default function AppContextProvider(props) {
     } else setLanguage(defaultLanguage);
   }, []);
 
-  const value = { languages, language, getLanguage, setLanguage, getText, changeLanguage };
+  const value = { languages, language, getLanguage, setLanguage, getText, changeLanguage, tab, setTab, nestedProfileTab, setNestedProfileTab };
   return <AppContext.Provider value={value}>{props.children}</AppContext.Provider>;
 }

@@ -10,15 +10,18 @@ import "./assets/fa-6.2.1/css/fontawesome.min.css";
 // Styles
 import "./styles/App.scss";
 import QueryContextProvider from "./contexts/QueryContext.jsx";
+import FormContextProvider from "./contexts/FormContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <AppContextProvider>
-      <QueryContextProvider>
-        <PluginContextProvider>
-          <App />
-        </PluginContextProvider>
-      </QueryContextProvider>
+      <FormContextProvider>
+        <QueryContextProvider>
+          <PluginContextProvider>
+            <App />
+          </PluginContextProvider>
+        </QueryContextProvider>
+      </FormContextProvider>
     </AppContextProvider>
   </React.StrictMode>
 );

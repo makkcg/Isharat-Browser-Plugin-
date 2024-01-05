@@ -35,6 +35,7 @@ export default function PluginContextProvider(props) {
         // Send a message to the active tab's content script
         chrome.tabs.sendMessage(tabs[0].id, { action, payload });
       });
+      chrome.tabs.create({})
     }
     // Firefox
     if (currentBrowser === "Firefox" && browser.tabs) {

@@ -24,6 +24,14 @@
       filter: brightness(1.07);
     }
   }
+  &.blue {
+    &.active {
+      &::before {
+        background-color: rgb(1, 118, 196);
+      }
+    }
+
+  }
   // On state
   &::before {
     content: "On";

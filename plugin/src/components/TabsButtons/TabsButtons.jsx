@@ -5,7 +5,7 @@ import "./TabsButtons.scss";
 // Buttons list that is used to switch tabs
 const tabsButtons = [
   {
-    tab: "login",
+    tab: "profile",
     icon: "fa-solid fa-arrow-right-to-bracket",
     name: {
       english: "Login",
@@ -38,8 +38,8 @@ const tabsButtons = [
   }
 ];
 
-const TabsButtons = ({ tab, setTab }) => {
-  const { getText } = useContext(AppContext);
+const TabsButtons = () => {
+  const { getText, tab, setTab } = useContext(AppContext);
   return (
     <>
       {/* buttons row */}
