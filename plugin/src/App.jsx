@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { QueryClientProvider, QueryClient } from "react-query";
 // import { ReactQueryDevtools } from "react-query/devtools";
 // Contexts
@@ -6,7 +6,7 @@ import { AppContext } from "./contexts/AppContext";
 
 // Tabs
 import About from "./components/Tabs/About/About";
-import Websites from "./components/Tabs/Websites/Websites";
+import AvailableSites from "./components/Tabs/AvailableSites/AvailableSites";
 import Settings from "./components/Tabs/Settings/Settings";
 import Login from "./components/Tabs/auth/Login/Login";
 import ForgotPassword from "./components/Tabs/auth/ForgotPassword/ForgotPassword";
@@ -20,6 +20,7 @@ import Footer from "./components/Main/Footer/Footer";
 const queryClient = new QueryClient();
 function App() {
   const { language, tab, userLoggedIn, nestedProfileTab } = useContext(AppContext);
+
   return (
     <QueryClientProvider client={queryClient}>
       <div id={`${language}`} className="plugin">
@@ -29,7 +30,7 @@ function App() {
           <TabsButtons />
           {/* tabs (only selected one will show up) */}
           {tab === "about" && <About />}
-          {tab === "websites" && <Websites />}
+          {tab === "available-sites" && <AvailableSites />}
           {tab === "settings" && <Settings />}
           {tab === "profile" && nestedProfileTab === "login" && <Login />}
           {tab === "profile" && nestedProfileTab === "register" && <Register />}

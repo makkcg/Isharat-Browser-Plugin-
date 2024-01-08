@@ -4,8 +4,8 @@ export const AppContext = createContext();
 
 export default function AppContextProvider(props) {
   // current selected tab
-  const [tab, setTab] = useState("profile");
-  const [nestedProfileTab, setNestedProfileTab] = useState("profile");
+  const [tab, setTab] = useState("available-sites");
+  const [nestedProfileTab, setNestedProfileTab] = useState("login");
   const [userLoggedIn, setUserLoggedIn] = useState(true);
 
   const logout = () => {

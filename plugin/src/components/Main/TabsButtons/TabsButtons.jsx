@@ -16,7 +16,7 @@ const TabsButtons = () => {
       }
     },
     {
-      tab: "websites",
+      tab: "available-sites",
       icon: "fa-solid fa-globe",
       name: {
         english: "Available Sites",

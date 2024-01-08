@@ -1,4 +1,4 @@
-import { createContext, useEffect } from "react";
+import { createContext, useEffect, useState } from "react";
 import contentControls from "../data/contentControls";
 export const PluginContext = createContext();
 
@@ -28,12 +28,17 @@ export default function PluginContextProvider(props) {
   const chrome = window.chrome || {};
   let currentBrowser = getBrowserType();
 
+  const [currentWebsite, setCurrentWebsite] = useState("");
+  useEffect(() => {
+    sendMessage("get-current-domain", "", setCurrentWebsite);
+  }, []);
+
   function sendMessage(action, payload, setResponse) {
     // Chrome
     if ((currentBrowser === "Chrome" || currentBrowser === "Edge") && chrome.tabs) {
       chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         chrome.tabs.sendMessage(tabs[0].id, { action, payload }, function (response) {
-          setResponse(response);
+          if (setResponse) setResponse(response);
         });
       });
     }
@@ -49,6 +54,6 @@ export default function PluginContextProvider(props) {
       safari.application.activeBrowserWindow.activeTab.page.dispatchMessage(action, { action, payload });
     }
   }
-  const value = { sendMessage };
+  const value = { sendMessage, currentWebsite };
   return <PluginContext.Provider value={value}>{props.children}</PluginContext.Provider>;
 }

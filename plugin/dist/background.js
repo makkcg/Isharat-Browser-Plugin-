@@ -22,15 +22,16 @@ function getBrowserType() {
 // current used browser
 let currentBrowser = getBrowserType();
 
+let translateButtonId = "translate";
+let translateBtnText = "Translate into sign language - ترجم الى لغة الاشارة";
+
 // Chrome & Edge Context Menu
 if (currentBrowser === "Chrome" || currentBrowser === "Edge") {
-  chrome.runtime.onInstalled.addListener(() => {
-    // Create the context menu item
-    chrome.contextMenus.create({
-      id: "translate",
-      title: "ترجمة بلغة الاشارة",
-      contexts: ["selection"]
-    });
+  // Create the context menu item
+  chrome.contextMenus.create({
+    id: translateButtonId,
+    title: translateBtnText,
+    contexts: ["selection"]
   });
 
   chrome.contextMenus.onClicked.addListener(info => {
@@ -42,13 +43,11 @@ if (currentBrowser === "Chrome" || currentBrowser === "Edge") {
 
 // Firefox Context Menu
 if (currentBrowser === "Firefox") {
-  browser.runtime.onInstalled.addListener(() => {
-    // Create the context menu item
-    browser.contextMenus.create({
-      id: "translate",
-      title: "ترجمة بلغة الاشارة",
-      contexts: ["selection"]
-    });
+  // Create the context menu item
+  browser.contextMenus.create({
+    id: translateButtonId,
+    title: translateBtnText,
+    contexts: ["selection"]
   });
 
   browser.contextMenus.onClicked.addListener(info => {
@@ -64,10 +63,10 @@ if (currentBrowser === "Safari") {
   safari.application.addEventListener(
     "command",
     event => {
-      if (event.command === "translate") {
+      if (event.command === translateButtonId) {
         // Create the context menu item
         var contextMenu = event.target.contextMenu;
-        contextMenu.appendContextMenuItem("translate", "ترجمة بلغة الاشارة", "selection");
+        contextMenu.appendContextMenuItem(translateButtonId, translateBtnText, "selection");
       }
     },
     false
@@ -77,7 +76,7 @@ if (currentBrowser === "Safari") {
   safari.application.addEventListener(
     "validate",
     event => {
-      if (event.command === "translate") {
+      if (event.command === translateButtonId) {
         // Handle the click event
         console.log("Selected Text:", safari.application.activeBrowserWindow.activeTab.page.selection.toString());
         // Open a new tab or window with the desired URL
