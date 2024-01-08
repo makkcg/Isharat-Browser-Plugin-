@@ -1,0 +1,97 @@
+.verify-email-page {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(15deg, #0dd13e, #fff);
+  &.invalid {
+    background: linear-gradient(15deg, #c7c7c7, #fff);
+    .card {
+      .card-body {
+        .title {
+          color: #000;
+        }
+        .image {
+          background-color: #eee;
+        }
+      }
+    }
+  }
+  .card {
+    background-color: #ffffff54;
+    width: calc(100% - 30px);
+    max-width: 500px;
+    padding: 20px;
+
+    border-radius: 15px;
+    box-shadow: 0 10px 10px #0000002a;
+    .card-body {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      border: 1px solid #aaa;
+      border-radius: 12px;
+      padding-top: 130px;
+      hr {
+        width: 100%;
+        background-color: transparent;
+        border-bottom: 1px solid #ddd;
+        outline: none;
+      }
+      .title {
+        margin: 0;
+        font-weight: 400;
+        font-size: 40px;
+        color: green;
+      }
+      .description {
+        margin: 5px;
+        text-align: center;
+      }
+      .image {
+        width: 250px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: -10px;
+        transform: translate(0, -50%);
+        background-color: #d2fddd;
+        border-radius: 50%;
+        padding: 30px;
+        box-shadow: 0 5px 10px #00000027;
+        border: 1px solid #ccc;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+        }
+      }
+      .buttons {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 20px;
+        .main-btn {
+          flex-grow: 1;
+        }
+      }
+    }
+  }
+}
+@media (max-width: 480px) {
+  .verify-email-page {
+    .card {
+      .card-body {
+        padding-top: 80px;
+        .image {
+          width: 180px;
+        }
+      }
+    }
+  }
+}

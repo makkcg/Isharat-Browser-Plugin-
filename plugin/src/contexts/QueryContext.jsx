@@ -6,7 +6,7 @@ export const QueryContext = createContext();
 
 export default function QueryContextProvider(props) {
   const securityKey = "kcg-isharat-123456-kcg-isharat";
-  const mainApiUrl = "https://kcgwebservices.net/sign_translator_v4.1/public/api/";
+  const mainApiUrl = "https://kcgwebservices.net/isharat/isharat/public/api/";
 
   function apiGet({ queryKey }) {
     const key = queryKey[0];

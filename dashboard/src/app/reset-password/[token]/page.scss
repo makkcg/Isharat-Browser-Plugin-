@@ -1,0 +1,36 @@
+.reset-password-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #eee;
+  .card {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    padding: 15px;
+    width: calc(100% - 30px);
+    max-width: 400px;
+    box-shadow: 0 10px 10px #0000002c;
+    border-radius: 15px;
+    .tab-title {
+      text-align: center;
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .form-text {
+      padding: 0 10px;
+      margin-top: 7px;
+      font-size: 15px;
+      &.center {
+        text-align: center;
+      }
+    }
+    .forgot-password-btn {
+      color: #888;
+      margin: 0;
+      cursor: pointer;
+    }
+  }
+}

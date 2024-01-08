@@ -1,5 +1,4 @@
 import ReactDOM from "react-dom/client";
-import App from "./App.jsx";
 // Contexts
 import AppContextProvider from "./contexts/AppContext.jsx";
 import PluginContextProvider from "./contexts/PluginContext.jsx";
@@ -13,14 +12,14 @@ import FormContextProvider from "./contexts/FormContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   // <React.StrictMode>
-    <AppContextProvider>
-      <FormContextProvider>
-        <QueryContextProvider>
-          <PluginContextProvider>
-            <App />
-          </PluginContextProvider>
-        </QueryContextProvider>
-      </FormContextProvider>
-    </AppContextProvider>
+  <AppContextProvider>
+    <FormContextProvider>
+      <QueryContextProvider>
+        <PluginContextProvider>
+          <h1>Hello</h1>
+        </PluginContextProvider>
+      </QueryContextProvider>
+    </FormContextProvider>
+  </AppContextProvider>
   // </React.StrictMode>
 );

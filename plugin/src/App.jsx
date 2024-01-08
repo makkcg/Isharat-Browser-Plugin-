@@ -20,7 +20,6 @@ import Footer from "./components/Main/Footer/Footer";
 const queryClient = new QueryClient();
 function App() {
   const { language, tab, userLoggedIn, nestedProfileTab } = useContext(AppContext);
-  console.log("Current Domain: ", window.location.href);
   return (
     <QueryClientProvider client={queryClient}>
       <div id={`${language}`} className="plugin">

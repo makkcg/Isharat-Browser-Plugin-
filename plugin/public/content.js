@@ -23,6 +23,7 @@ function getBrowserType() {
 let currentBrowser = getBrowserType();
 // check if element has text
 const elementHasText = element => element.textContent.trim().length > 0;
+const getDomain = () => window.location.hostname.split("www.").join("");
 
 const getClasses = classes =>
   classes
@@ -211,9 +212,10 @@ function handleContrast(payload) {
 }
 
 // listen to message from popup
-function onMessage(request, action, callback) {
+function onMessage(request, sendResponse, action, callback) {
   if (request.action === action) {
     callback(request.payload);
+    sendResponse({ msg: "success" });
 
     // Chrome & Edge
     if (currentBrowser === "Chrome" || currentBrowser === "Edge") {
@@ -260,18 +262,20 @@ function enableTranslationIcon(payload) {
   });
 }
 
-function listenToContentControlMsgs(request) {
-  onMessage(request, "large_font", handleLargeFont);
-  onMessage(request, "font_weight", handleFontWeight);
-  onMessage(request, "text_spacing", handleLetterSpacing);
-  onMessage(request, "line_height", handleLineHeight);
-  onMessage(request, "highlight_links", handleHighlightLinks);
-  onMessage(request, "text_align", handleTextAlign);
-  onMessage(request, "saturation", handleSaturation);
-  onMessage(request, "contrast", handleContrast);
-  onMessage(request, "hide_images", handleHideImages);
+function listenToMsgsActions(request, sendResponse) {
+  onMessage(request, sendResponse, "large_font", handleLargeFont);
+  onMessage(request, sendResponse, "font_weight", handleFontWeight);
+  onMessage(request, sendResponse, "text_spacing", handleLetterSpacing);
+  onMessage(request, sendResponse, "line_height", handleLineHeight);
+  onMessage(request, sendResponse, "highlight_links", handleHighlightLinks);
+  onMessage(request, sendResponse, "text_align", handleTextAlign);
+  onMessage(request, sendResponse, "saturation", handleSaturation);
+  onMessage(request, sendResponse, "contrast", handleContrast);
+  onMessage(request, sendResponse, "hide_images", handleHideImages);
 
-  onMessage(request, "enable_translate_icon", enableTranslationIcon);
+  onMessage(request, sendResponse, "enable_translate_icon", enableTranslationIcon);
+
+  if (request.action === "get-current-domain") sendResponse(getDomain());
 }
 
 setTimeout(() => {
@@ -291,8 +295,8 @@ setTimeout(() => {
 // Chrome & Edge
 if (currentBrowser === "Chrome" || currentBrowser === "Edge") {
   if (chrome.runtime) {
-    chrome.runtime.onMessage.addListener(function (request) {
-      listenToContentControlMsgs(request);
+    chrome.runtime.onMessage.addListener(function (request, _sender, sendResponse) {
+      listenToMsgsActions(request, sendResponse);
     });
   }
 }
@@ -300,8 +304,8 @@ if (currentBrowser === "Chrome" || currentBrowser === "Edge") {
 // Firefox
 if (currentBrowser === "Firefox") {
   if (browser.runtime) {
-    browser.runtime.onMessage.addListener(function (request) {
-      listenToContentControlMsgs(request);
+    browser.runtime.onMessage.addListener(function (request, _sender, sendResponse) {
+      listenToMsgsActions(request, sendResponse);
     });
   }
 }
@@ -310,21 +314,21 @@ if (currentBrowser === "Firefox") {
 if (currentBrowser === "Safari") {
   // Receiving a message in a content script
   safari.self.addEventListener("message", function (event) {
-    listenToContentControlMsgs({ ...event, action: event.name });
+    listenToMsgsActions({ ...event, action: event.name });
   });
 }
 
 getTextElements().forEach(element => {
   if (element.innerText && element.innerText.length > 20) {
     let button = document.createElement("button");
-    button.title = element.innerText;
+    button.title = `ترجم الى لغة الاشارة (${element.innerText})`;
     button.classList.add("isharat-translate-btn");
     button.onclick = () => {
       window.open("https://google.com");
     };
     let img = document.createElement("img");
     img.classList.add("isharat-translate-img");
-    img.src = "https://static.vecteezy.com/system/resources/previews/021/996/818/original/hand-cursor-icon-clip-art-free-png.png";
+    img.src = "https://kcgwebservices.net/isharat/isharat/storage/app/public/hand_pointer/hand_point.png";
     button.appendChild(img);
     element.appendChild(button);
   }

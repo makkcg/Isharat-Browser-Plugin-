@@ -28,14 +28,14 @@ export default function PluginContextProvider(props) {
   const chrome = window.chrome || {};
   let currentBrowser = getBrowserType();
 
-  function sendMessage(action, payload) {
+  function sendMessage(action, payload, setResponse) {
     // Chrome
     if ((currentBrowser === "Chrome" || currentBrowser === "Edge") && chrome.tabs) {
       chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-        // Send a message to the active tab's content script
-        chrome.tabs.sendMessage(tabs[0].id, { action, payload });
+        chrome.tabs.sendMessage(tabs[0].id, { action, payload }, function (response) {
+          setResponse(response);
+        });
       });
-      chrome.tabs.create({})
     }
     // Firefox
     if (currentBrowser === "Firefox" && browser.tabs) {
@@ -46,10 +46,9 @@ export default function PluginContextProvider(props) {
     }
     // Safari
     if (currentBrowser === "Safari") {
-      safari.application.activeBrowserWindow.activeTab.page.dispatchMessage(action, {action, payload});
+      safari.application.activeBrowserWindow.activeTab.page.dispatchMessage(action, { action, payload });
     }
   }
-
   const value = { sendMessage };
   return <PluginContext.Provider value={value}>{props.children}</PluginContext.Provider>;
 }
