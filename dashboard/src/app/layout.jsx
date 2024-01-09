@@ -1,7 +1,7 @@
 import { Inter } from "next/font/google";
 import "@/styles/app.scss";
-import "@/assets/fa-6.2.1/css/all.min.css";
-import "@/assets/fa-6.2.1/css/fontawesome.min.css";
+import "@/assets/fa-6.5.1/css/all.min.css";
+import "@/assets/fa-6.5.1/css/fontawesome.min.css";
 
 import AppContextProvider from "@/context/AppContext.jsx";
 import FormContextProvider from "@/context/FormContext.jsx";

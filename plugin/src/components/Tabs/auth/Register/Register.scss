@@ -17,9 +17,16 @@
       text-align: center;
     }
   }
+
   .forgot-password-btn {
     color: #888;
     margin: 0;
     cursor: pointer;
+  }
+}
+
+#arabic {
+  .phone-two-inputs {
+    direction: ltr;
   }
 }

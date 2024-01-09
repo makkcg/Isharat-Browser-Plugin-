@@ -2,9 +2,23 @@ import { useContext, useEffect, useState } from "react";
 import { have } from "../../../utils/search";
 import { AppContext } from "../../../contexts/AppContext";
 import "./SelectBox.scss";
-import loadingGIF from "../../../images/loading.gif";
+import Loading from "../../Loading/Loading";
 
-const SelectBox = ({ text, nameField, secNameField, list, isLoading, noResultMsg, isError, refetch, selectedItem, setSelectedItem, forForm, icon }) => {
+const SelectBox = ({
+  text = "",
+  nameField = "",
+  secNameField = "",
+  list = [],
+  isLoading = false,
+  noResultMsg = "",
+  isError = false,
+  refetch = () => {},
+  selectedItem = {},
+  removeSearch = false,
+  setSelectedItem,
+  forForm,
+  icon
+}) => {
   const { getText } = useContext(AppContext);
   // show & hide dropdown state
   const [dropdownActive, setDropdownActive] = useState(false);
@@ -20,9 +34,8 @@ const SelectBox = ({ text, nameField, secNameField, list, isLoading, noResultMsg
     }
   }, [dropdownActive]);
 
-  if (!selectedItem) selectedItem = {};
   return (
-    <div onMouseLeave={() => setDropdownActive(false)} className={`select-box ${dropdownActive ? "active" : ""} ${forForm ? "for-form" : ""}`}>
+    <div className={`select-box ${dropdownActive ? "active" : ""} ${forForm ? "for-form" : ""}`}>
       {/* Selected item button */}
       <button
         onClick={e => {
@@ -40,34 +53,33 @@ const SelectBox = ({ text, nameField, secNameField, list, isLoading, noResultMsg
           {!forForm && `${text}:`} {selectedItem[nameField]} {secNameField && selectedItem[secNameField] ? `(${selectedItem[secNameField]})` : ""}
         </div>{" "}
         <div className="icons">
-          {isLoading && (
-            <span className="loading-spinner">
-              <img src={loadingGIF} />
-            </span>
-          )}
+          {isLoading && <Loading size={25} />}
           <i className="fa-solid fa-sort-down"></i>
         </div>
       </button>
       {/* dropdown */}
       <div className="select-dropdown">
         {/* search bar */}
-        <div className="dropdown-search-box">
-          <input
-            value={SearchValue}
-            name="search"
-            onChange={e => setSearchValue(e.target.value)}
-            className="search-input"
-            type="search"
-            placeholder={getText("بحث...", "Search...")}
-          />
-        </div>
+        {!removeSearch && (
+          <div className="dropdown-search-box">
+            <input
+              value={SearchValue}
+              name="search"
+              onChange={e => setSearchValue(e.target.value)}
+              className="search-input"
+              type="search"
+              placeholder={getText("بحث...", "Search...")}
+            />
+          </div>
+        )}
         {/* Loading & Error Boxs */}
-        {isLoading && <div className="loading-box">{getText("جار التحميل...", "Loading...")}</div>}
+        {isLoading && <div className="loading-box">{<Loading type="three-dots" size={15} />}</div>}
         {isError && (
           <div className="error-box">
+            <i className="fa-solid fa-exclamation-circle"></i>
             {getText("عذرا حدث خطأ!", "Sorry, Something went wrong!")}
             {/* Retry button */}
-            <button className="main-btn" onClick={refetch}>
+            <button className="link-btn" onClick={refetch}>
               {getText("إعادة المحاولة", "Retry")}
             </button>
           </div>

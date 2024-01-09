@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { QueryClientProvider, QueryClient } from "react-query";
 // import { ReactQueryDevtools } from "react-query/devtools";
 // Contexts
@@ -19,11 +19,12 @@ import Footer from "./components/Main/Footer/Footer";
 
 const queryClient = new QueryClient();
 function App() {
-  const { language, tab, userLoggedIn, nestedProfileTab } = useContext(AppContext);
-
+  const { tab, language, languageSet, userLoggedIn, nestedProfileTab } = useContext(AppContext);
+  console.log();
+  if (!tab || !language || !languageSet) return "";
   return (
     <QueryClientProvider client={queryClient}>
-      <div id={`${language}`} className="plugin">
+      <div className="plugin">
         {/* Header */}
         <Header />
         <div className="container">

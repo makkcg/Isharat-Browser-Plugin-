@@ -131,10 +131,19 @@ const Register = () => {
             />
           }
         />
-        <div className="two-inputs">
+        <div className="two-inputs phone-two-inputs">
           {/* Mobile */}
           <FormText icon="fa-solid fa-phone-volume" title={getText("الكود", "Code")} value={selectedCountry.PhoneCode} classes="small" />
-          <Input required={true} title={getText("الموبايل", "Mobile")} type="number" name="mobile" icon="fa-solid fa-phone" value={userData.mobile} action={updateData} />
+          <Input
+            onWheel={event => event.currentTarget.blur()}
+            required={true}
+            title={getText("الموبايل", "Mobile")}
+            type="number"
+            name="mobile"
+            icon="fa-solid fa-phone"
+            value={userData.mobile}
+            action={updateData}
+          />
         </div>
         {/* Email */}
         <Input required={true} title={getText("الايميل", "Email")} type="email" name="email" icon="fa-solid fa-envelope" value={userData.email} action={updateData} />
@@ -167,13 +176,14 @@ const Register = () => {
         <div className={`hint general-hint`}></div>
         {/* Submit */}
         <button onClick={submit} type="submit" className="submit main-btn">
+          <i className="fa-solid fa-user-plus"></i>
           {getText("إنشاء الحساب", "Register")}
         </button>
         {/* To Register */}
         <p className="form-text center">
           {getText("لديك حساب؟", "Already have an account?")}{" "}
           <span onClick={() => setNestedProfileTab("login")} className="link-btn">
-            {getText("تسجيل الدخول", "Login")}
+            {getText("تسجيل الدخول", "Login now")}
           </span>
         </p>
       </form>

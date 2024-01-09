@@ -1,9 +1,9 @@
 import { useContext } from "react";
 import { AppContext } from "../../../contexts/AppContext";
 import DiginoviaLogo from "../../../images/diginovia-logo.jpeg";
-import "./Footer.scss"
+import "./Footer.scss";
 
-const Footer = () => {
+const Footer = ({ renderFor }) => {
   const { getText } = useContext(AppContext);
   return (
     <footer className="footer">
@@ -14,7 +14,7 @@ const Footer = () => {
           https://isharat.net
         </a>
       </p>
-      <hr className="hr" />
+      {renderFor !== "popup" && <hr className="hr" />}
       {/* copyright text */}
       <p className="copyright">
         <a href="https://diginovia.com" target="blank" className="logo">

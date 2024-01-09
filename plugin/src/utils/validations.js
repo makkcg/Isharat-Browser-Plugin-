@@ -12,6 +12,14 @@ export function emailValid(email) {
     .match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
 }
 
+export function isEnglish(text) {
+  // Regular expression to match English alphabet characters
+  var englishLettersRegex = /[A-Za-z]/;
+
+  // Test if the text matches the English alphabet regex
+  return englishLettersRegex.test(text);
+}
+
 // username regular expression
 export const USERNAME_REGEX = /^(?=.{1,100}$)(?![_.])(?!.*[_.]{2})[a-zA-Z._]+(?<![_.])$/;
 // regex for english letters (A to Z) and Arabic Letters (أ to ى) only

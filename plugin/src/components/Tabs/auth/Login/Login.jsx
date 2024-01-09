@@ -55,6 +55,7 @@ const Login = () => {
         </div>
         {/* Submit */}
         <button onClick={submit} type="submit" className="submit main-btn">
+          <i className="fa-solid fa-arrow-right-to-bracket"></i>
           {getText("تسجيل الدخول", "Login")}
         </button>
         <hr className="hr form-hr" />
@@ -67,7 +68,7 @@ const Login = () => {
         <p className="form-text center">
           {getText("ليس لديك حساب؟", "Don't have an account?")}{" "}
           <span onClick={() => setNestedProfileTab("register")} className="link-btn">
-            {getText("إنشاء حساب", "Register")}
+            {getText("إنشاء حساب جديد", "Create new one")}
           </span>
         </p>
       </form>

@@ -30,11 +30,17 @@
       .no-translators,
       .error-box {
         display: flex;
-        gap: 10px;
+        gap: 5px;
         align-items: center;
         justify-content: center;
         font-size: 15px;
         margin-top: 15px;
+        .link-btn {
+          flex-grow: 0;
+        }
+        .fa-exclamation-circle {
+          color: rgb(255, 72, 0);
+        }
       }
       .translators-list {
         display: grid;
@@ -62,9 +68,16 @@
           &:hover {
             background-color: #fff;
             box-shadow: 0 5px 5px #00000025;
+            .card-body {
+              .image {
+                img {
+                  scale: 1.05;
+                }
+              }
+            }
           }
           &.active {
-            background: $mainDClr;
+            background: $mainClr;
           }
           .card-body {
             border-radius: 3px;
@@ -78,6 +91,7 @@
               display: flex;
               justify-content: center;
               img {
+                transition: 0.3s;
                 width: 100%;
                 height: 100%;
                 object-fit: cover;

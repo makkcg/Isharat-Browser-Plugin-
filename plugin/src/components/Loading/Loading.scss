@@ -1,0 +1,78 @@
+@import "../../styles/variables.scss";
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+.default-loading {
+  position: relative;
+  border: 3px solid $mainDClr;
+  border-radius: 50%;
+  border-left-color: transparent;
+  border-right-color: transparent;
+  aspect-ratio: 1/1;
+  animation: rotate 1.1s infinite linear;
+  margin: 0 5px;
+}
+
+.loading-spinner-dots,
+.arrow-spinner,
+.circle-notch {
+  width: 30px;
+  aspect-ratio: 1/1;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  animation: rotate 1.1s infinite linear;
+  color: $mainDClr;
+}
+
+.three-dots {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  .dot {
+    flex-shrink: 0;
+    display: flex;
+    width: 10px;
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+    background-color: $mainDClr;
+    box-shadow: 0 20px 7px #00000021;
+    animation: move-dot 0.5s infinite alternate ease-in;
+    &.dot-2 {
+      animation: move-dot 0.5s 0.2s infinite alternate ease-in;
+    }
+    &.dot-3 {
+      animation: move-dot 0.5s 0.4s infinite alternate ease-in;
+    }
+  }
+  @keyframes move-dot {
+    0% {
+      translate: 0 0;
+      opacity: 1;
+      box-shadow: 0 20px 7px #00000021;
+    }
+    100% {
+      opacity: 0.3;
+      translate: 0 20px;
+      box-shadow: 0 0 2px #0000005d;
+    }
+  }
+}
+
+@keyframes rotate {
+  0% {
+    rotate: 0deg;
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 1;
+    rotate: 360deg;
+  }
+}

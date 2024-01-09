@@ -5,11 +5,7 @@
   position: relative;
   height: 50px;
   z-index: 2;
-  &.for-form {
-    .selected-item {
-      // border: none;
-    }
-  }
+
   .selected-item {
     position: absolute;
     z-index: 2;
@@ -24,7 +20,12 @@
     cursor: pointer;
     transition: 0.2s;
     &:hover {
-      background-color: #eee;
+      border-color: $mainClr;
+      .icons {
+        .fa-sort-down {
+          color: $mainClr;
+        }
+      }
     }
     .text {
       display: flex;
@@ -36,6 +37,7 @@
       align-items: center;
       gap: 5px;
       .fa-sort-down {
+        transition: 0.2s;
         font-size: 23px;
         margin-bottom: 8px;
       }
@@ -51,6 +53,7 @@
     top: 25px;
     border-radius: 30px;
     box-shadow: 0 5px 10px #00000036;
+    border: 1px solid transparent;
     .dropdown-search-box {
       padding: 0 15px;
     }
@@ -60,9 +63,22 @@
       display: flex;
       gap: 5px;
       justify-content: center;
+      align-items: center;
       font-size: 14px;
       padding: 15px;
       padding-bottom: 25px;
+    }
+    .error-box {
+      .fa-exclamation-circle {
+        color: rgb(255, 60, 0);
+      }
+      .link-btn {
+        flex-grow: 0;
+        font-weight: 600;
+      }
+    }
+    .loading-box {
+      margin-bottom: 15px;
     }
     .list-box {
       padding: 15px;
@@ -71,7 +87,7 @@
     .dropdown-list {
       margin: 0;
       list-style: none;
-      max-height: 230px;
+      max-height: 160px;
       padding: 0;
       overflow-y: auto;
       .dropdown-item {
@@ -99,15 +115,17 @@
   }
   &.active {
     .selected-item {
-      border-color: #fff;
+      border-color: $mainClr;
       border-radius: 22px;
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
+      border-bottom: transparent;
     }
     .select-dropdown {
       padding-top: 50px;
       top: 0;
-      max-height: 350px;
+      max-height: 280px;
+      border-color: $mainClr;
     }
   }
 }

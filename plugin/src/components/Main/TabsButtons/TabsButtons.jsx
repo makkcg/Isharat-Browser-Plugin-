@@ -8,6 +8,14 @@ const TabsButtons = () => {
   // Buttons list that is used to switch tabs
   const tabsButtons = [
     {
+      tab: "profile",
+      icon: "fa-solid fa-user-circle",
+      name: {
+        english: "Profile",
+        arabic: "حسابى"
+      }
+    },
+    {
       tab: "settings",
       icon: "fa-solid fa-gear",
       name: {
@@ -32,22 +40,19 @@ const TabsButtons = () => {
       }
     }
   ];
-  if (userLoggedIn && nestedProfileTab === "profile") {
-    tabsButtons.unshift({
-      tab: "profile",
-      icon: "fa-solid fa-user-circle",
-      name: {
-        english: "Profile",
-        arabic: "حسابى"
-      }
-    });
-  } else {
-    tabsButtons.unshift({
-      tab: "profile",
-      icon: "fa-solid fa-arrow-right-to-bracket",
-      name: {
-        english: "Login",
-        arabic: "دخول"
+  {
+    tabsButtons.forEach(btn => {
+      if (btn.tab === "profile") {
+        if (!userLoggedIn) {
+          console.log(nestedProfileTab);
+          if (nestedProfileTab !== "profile") {
+            btn.icon = "fa-solid fa-arrow-right-to-bracket";
+            btn.name = {
+              english: "Login",
+              arabic: "دخول"
+            };
+          }
+        }
       }
     });
   }

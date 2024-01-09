@@ -324,7 +324,12 @@ getTextElements().forEach(element => {
     button.title = `ترجم الى لغة الاشارة (${element.innerText})`;
     button.classList.add("isharat-translate-btn");
     button.onclick = () => {
-      window.open("https://google.com");
+      if (currentBrowser === "Chrome" || currentBrowser === "Edge") {
+        chrome.runtime.sendMessage({ action: "open-popup", text: element.innerText });
+      }
+      if (currentBrowser === "Firefox") {
+        browser.runtime.sendMessage({ action: "open-popup", text: element.innerText });
+      }
     };
     let img = document.createElement("img");
     img.classList.add("isharat-translate-img");

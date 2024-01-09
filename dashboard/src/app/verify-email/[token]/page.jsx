@@ -14,7 +14,7 @@ const VerifyEmail = () => {
   const { token } = useParams();
   console.log("token: ", token);
   // email verified state
-  const [emailVerified, setEmailVerified] = useState(false);
+  const [emailVerified, setEmailVerified] = useState(true);
   return (
     <div className={`verify-email-page ${emailVerified ? "" : "invalid"}`}>
       <div className="card">

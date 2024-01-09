@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { AppContext } from "../../contexts/AppContext";
 
-const Input = ({ type = "text", name = "name", icon, title = "Enter Title", action = () => {}, value = "", element, required = false }) => {
+const Input = ({ type = "text", name = "name", icon, title = "Enter Title", action = () => {}, value = "", element, required = false, onWheel = () => {} }) => {
   const { getText } = useContext(AppContext);
   const [showPassword, setShowPassword] = useState(false);
   let inputType = type;
@@ -29,7 +29,7 @@ const Input = ({ type = "text", name = "name", icon, title = "Enter Title", acti
           <div className="icon">
             <i className={icon}></i>
           </div>
-          {type !== "select" && <input autoComplete="true" value={value} onChange={action} type={inputType} id={name} name={name} />}
+          {type !== "select" && <input onWheel={onWheel} autoComplete="true" value={value} onChange={action} type={inputType} id={name} name={name} />}
 
           {type === "password" && (
             <div data-title={getText("عرض", "Show")} onClick={() => setShowPassword(!showPassword)} className="show-password-btn">
@@ -39,7 +39,7 @@ const Input = ({ type = "text", name = "name", icon, title = "Enter Title", acti
         </div>
       )}
 
-      {type !== "select" && !icon && <input autoComplete="true" value={value} onChange={action} type={inputType} id={name} name={name} />}
+      {type !== "select" && !icon && <input onWheel={onWheel} autoComplete="true" value={value} onChange={action} type={inputType} id={name} name={name} />}
       {type === "select" && element && element}
       <div className={`hint ${name}-hint`}></div>
     </div>

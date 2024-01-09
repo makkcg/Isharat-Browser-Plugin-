@@ -42,12 +42,13 @@ const ForgotPassword = () => {
 
         {/* Submit */}
         <button onClick={submit} type="submit" className="submit main-btn">
+          <i className="fa-solid fa-paper-plane"></i>
           {getText("إرسال", "Send")}
         </button>
         <hr className="hr form-hr" />
         {/* Back to Login */}
         <p onClick={() => setNestedProfileTab("login")} className="form-text center login-btn">
-          {getText("العودة لتسجيل الدخول", "Back to login")}
+          <i className={`fa-solid fa-arrow-${getText("right", "left")}`}></i> {getText("العودة لتسجيل الدخول", "Back to login")}
         </p>
       </form>
     </div>

@@ -1,6 +1,6 @@
 import "./Profile.scss";
 import cover from "../../../images/cover.jpg";
-import profilePicture from "../../../images/translators/1.jpg";
+import profilePicture from "../../../images/person.jpg";
 import { useContext } from "react";
 import { AppContext } from "../../../contexts/AppContext";
 
@@ -27,7 +27,7 @@ const Profile = () => {
       </div>
       <div className="profile-cards">
         {/* Top Card */}
-        <div className="profile-card top-card">
+        <div className="card top-card">
           <div className="profile-picture">
             <img src={profilePicture} alt="profile picture" />
           </div>
@@ -48,7 +48,7 @@ const Profile = () => {
           </div>
         </div>
         {/* Subscription Expire Card */}
-        <div className="profile-card subscription-expire-card">
+        <div className="card subscription-expire-card">
           <div className="user-info-item">
             <div className="icon">
               <i className="fa-solid fa-warning"></i>
@@ -63,7 +63,7 @@ const Profile = () => {
           </div>
         </div>
         {/* Subscription Details */}
-        <div className="profile-card">
+        <div className="card">
           <h1 className="card-title">{getText("معلومات الباقة", "Subscription Details")}</h1>
           <GetUserInfoItem title={getText("الباقة", "Package")} value={getText("الباقة لمجانية (30 يوم)", "Free (30 Days)")} icon="fa-solid fa-wand-magic-sparkles" />
           <GetUserInfoItem
@@ -75,7 +75,7 @@ const Profile = () => {
           <button className="link-btn rate-btn">{getText("تقييمك ومقترحك يهمنا اضغط هنا", "Your rating is important to us. Click here!")}</button>
         </div>
         {/* Personal Info */}
-        <div className="profile-card">
+        <div className="card">
           <h1 className="card-title">{getText("البيانات الشخصية", "Personal Info")}</h1>
           <GetUserInfoItem title={getText("الاسم الاول", "First Name")} value={"Fady"} icon="fa-solid fa-user" />
           <GetUserInfoItem title={getText("اسم العائلة", "Last Name")} value={"Magdy"} icon="fa-solid fa-user" />

@@ -108,6 +108,12 @@ body {
     object-fit: contain;
   }
 }
+.buttons {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+}
 .main-btn {
   padding: 3px 15px;
   border-radius: 30px;
@@ -119,6 +125,8 @@ body {
   justify-content: center;
   align-items: center;
   gap: 5px;
+  flex-grow: 1;
+  white-space: nowrap;
   width: 100%;
   i {
     font-size: 17px;
@@ -129,6 +137,7 @@ body {
 }
 
 input:not([type="checkbox"]),
+textarea,
 .form-input-text {
   border-radius: 30px;
   outline: none;
@@ -188,6 +197,14 @@ input[type="number"]::-webkit-inner-spin-button {
       height: calc(100% - 40px);
     }
   }
+}
+
+.card {
+  padding: 15px;
+  border-radius: 15px;
+  box-shadow: 0 5px 10px #00000025;
+  border: 1px solid $mainClr;
+  background-color: #fff;
 }
 
 .form {
@@ -287,9 +304,7 @@ input[type="number"]::-webkit-inner-spin-button {
       border: 1px solid #ccc;
       box-shadow: 0 5px 10px #0000001a;
       transition: 0.2s;
-      &:focus-within {
-        border-color: $mainClr;
-      }
+
       .icon {
         width: 45px;
         display: flex;
@@ -315,6 +330,12 @@ input[type="number"]::-webkit-inner-spin-button {
         font-size: 13px;
       }
     }
+    .input {
+      &:focus-within {
+        border-color: $mainClr;
+      }
+    }
+
     .select-box {
       height: 45px;
       z-index: 3;
@@ -323,6 +344,12 @@ input[type="number"]::-webkit-inner-spin-button {
         margin-top: 10px;
       }
       &.active {
+        .selected-item {
+          border-color: $mainClr;
+          border-bottom-color: transparent;
+          border-bottom-left-radius: 0;
+          border-bottom-right-radius: 0;
+        }
         .selected-item {
           box-shadow: unset;
         }
@@ -373,6 +400,9 @@ input[type="number"]::-webkit-inner-spin-button {
   cursor: pointer;
 }
 #arabic {
+  #root {
+    direction: ltr;
+  }
   * {
     direction: rtl;
   }

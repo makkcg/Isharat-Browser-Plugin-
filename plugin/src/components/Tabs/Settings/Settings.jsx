@@ -182,9 +182,10 @@ const Settings = () => {
           )}
           {translators.isError && (
             <div className="error-box">
+              <i className="fa-solid fa-exclamation-circle"></i>
               {getText("عذرا حدث خطأ!", "Sorry, Something went wrong!")}
               {/* Retry button */}
-              <button className="main-btn" onClick={translators.refetch}>
+              <button className="link-btn" onClick={translators.refetch}>
                 {getText("إعادة المحاولة", "Retry")}
               </button>
             </div>

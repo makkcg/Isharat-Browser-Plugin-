@@ -23,37 +23,55 @@ function getBrowserType() {
 let currentBrowser = getBrowserType();
 
 let translateButtonId = "translate";
-let translateBtnText = "Translate into sign language - ترجم الى لغة الاشارة";
+let translateBtnText = "Translate to sign language - ترجم للغة الاشارة";
+let popupSize = { width: 600, height: 900 };
 
+function createWindow(selectionText) {
+  if (currentBrowser === "Chrome" || currentBrowser === "Edge") {
+    chrome.windows.create({ url: "popup.html?text=" + selectionText, type: "popup", width: popupSize.width, height: popupSize.height });
+  } else if (currentBrowser === "Firefox") {
+    browser.windows.create({ url: "popup.html?text=" + selectionText, type: "popup", width: popupSize.width, height: popupSize.height });
+  }
+}
 // Chrome & Edge Context Menu
 if (currentBrowser === "Chrome" || currentBrowser === "Edge") {
   // Create the context menu item
-  chrome.contextMenus.create({
-    id: translateButtonId,
-    title: translateBtnText,
-    contexts: ["selection"]
+  chrome.runtime.onInstalled.addListener(function () {
+    chrome.contextMenus.create({
+      id: translateButtonId,
+      title: translateBtnText,
+      contexts: ["selection"]
+    });
   });
 
   chrome.contextMenus.onClicked.addListener(info => {
-    // Send a message to the background script to open the popup
-    console.log("Selected Text:", info.selectionText);
-    chrome.windows.create({ url: "https://www.google.com", type: "popup" });
+    createWindow(info.selectionText);
+  });
+
+  // Listen for messages from content scripts
+  chrome.runtime.onMessage.addListener(function (request) {
+    if (request.action === "open-popup") createWindow(request.text);
   });
 }
 
 // Firefox Context Menu
 if (currentBrowser === "Firefox") {
   // Create the context menu item
-  browser.contextMenus.create({
-    id: translateButtonId,
-    title: translateBtnText,
-    contexts: ["selection"]
+  browser.runtime.onInstalled.addListener(function () {
+    browser.contextMenus.create({
+      id: translateButtonId,
+      title: translateBtnText,
+      contexts: ["selection"]
+    });
   });
 
   browser.contextMenus.onClicked.addListener(info => {
-    // Send a message to the background script to open the popup
-    console.log("Selected Text:", info.selectionText);
-    browser.windows.create({ url: "https://www.google.com", type: "popup" });
+    createWindow(info.selectionText);
+  });
+
+  // Listen for messages from content scripts
+  browser.runtime.onMessage.addListener(function (request) {
+    if (request.action === "open-popup") createWindow(request.text);
   });
 }
 
@@ -80,7 +98,7 @@ if (currentBrowser === "Safari") {
         // Handle the click event
         console.log("Selected Text:", safari.application.activeBrowserWindow.activeTab.page.selection.toString());
         // Open a new tab or window with the desired URL
-        safari.application.activeBrowserWindow.openTab("foreground").url = "https://www.google.com";
+        safari.application.activeBrowserWindow.openTab("foreground").url = "popup.html";
       }
     },
     false
